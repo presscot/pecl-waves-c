@@ -13,49 +13,13 @@
    | license@php.net so we can mail you a copy immediately.               |
    +----------------------------------------------------------------------+
 */
+#ifndef PHP_WAVES_PRIV_H
+#define PHP_WAVES_PRIV_H
 
-#ifndef PHP_WAVES_H
-#define PHP_WAVES_H
+extern const zend_function_entry waves_functions[];
 
-#include "common.h"
-
-#define PHP_WAVES_VERSION "1.0.0"
-
-extern zend_module_entry waves_module_entry;
-#define phpext_waves_ptr &waves_module_entry
-
-zend_class_entry *php_event_get_exception_base(int root);
-zend_class_entry *php_event_get_exception(void);
-
-PHP_MINIT_FUNCTION(waves);
-PHP_MSHUTDOWN_FUNCTION(waves);
-PHP_RINIT_FUNCTION(waves);
-PHP_RSHUTDOWN_FUNCTION(waves);
-PHP_MINFO_FUNCTION(waves);
-
-#if defined(COMPILE_DL_EVENT)
-ZEND_TSRMLS_CACHE_EXTERN();
-#endif
-
-#ifdef ZTS
-# define WAVES_G(v) TSRMG(event_globals_id, zend_event_globals *, v)
-#else
-# define WAVES_G(v) (event_globals.v)
-#endif
-
-#ifdef PHP_WAVES_DEBUG
-# define PHP_WAVES_ASSERT(x) assert(x)
-#else
-# define PHP_WAVES_ASSERT(x)
-#endif
-
-#endif /* PHP_WAVES_H */
-
+#endif /* PHP_WAVES_PRIV_H */
 /*
- * Local variables:
- * tab-width: 4
- * c-basic-offset: 4
- * End:
- * vim600: noet sw=4 ts=4 fdm=marker
- * vim<600: noet sw=4 ts=4
+ * vim600: fdm=marker
+ * vim: noet sts=4 sw=4 ts=4
  */

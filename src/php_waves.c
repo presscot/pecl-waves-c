@@ -13,23 +13,14 @@
    | license@php.net so we can mail you a copy immediately.               |
    +----------------------------------------------------------------------+
 */
-#include "src/common.h"
-#include "zend_exceptions.h"
-#include "ext/spl/spl_exceptions.h"
-
-extern const zend_function_entry waves_functions[];
-
-zend_class_entry *php_event_exception_ce;
-
-static const zend_module_dep waves_deps[] = {
-	ZEND_MOD_END
-};
+#include "php_waves.h"
+#include "priv.h"
 
 /* {{{ waves_module_entry */
 zend_module_entry waves_module_entry = {
 	STANDARD_MODULE_HEADER_EX,
 	NULL,
-	waves_deps,
+	NULL, /* dependencies */
 	"waves",
 	waves_functions,
 	PHP_MINIT(waves),

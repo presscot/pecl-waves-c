@@ -23,6 +23,7 @@
 #include <ext/standard/info.h>
 
 #include "fe.h"
+#include "priv.h"
 
 /* {{{ ARG_INFO */
 ZEND_BEGIN_ARG_INFO_EX(arginfo_waves_secure_hash, 0, 0, 1)
@@ -33,6 +34,7 @@ ZEND_END_ARG_INFO()
 /* {{{ waves_functions[] */
 const zend_function_entry waves_functions[] = {
 	PHP_FE(waves_secure_hash, arginfo_waves_secure_hash)
+	PHP_FE_END /* Must be the last line in eio_functions[] */
 };
 /* }}} */
 
