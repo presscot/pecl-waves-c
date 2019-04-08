@@ -89,12 +89,42 @@ PHP_MINFO_FUNCTION(waves)
 
 /*{{{ API */
 
-/* {{{ proto waves_secure_hash(string message) */
+/* {{{ proto string waves_secure_hash(string message) */
 PHP_FUNCTION(waves_secure_hash)
 {
-	php_printf("%s\n", __func__);
+	char *message;
+	size_t message_len;
+	uint8_t hash[32];
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s",
+				&message, &message_len) == FAILURE) {
+		return;
+	}
+	waves_secure_hash((const uint8_t *)message, message_len, hash);
+	RETURN_STRINGL((const char *)hash, sizeof(hash));
 }
-/*}}}*/
+
+#if 0
+/**
+ * TODO: Maybe define resources for the following types?
+ *
+	 typedef unsigned char curve25519_signature[64];
+	 typedef unsigned char curve25519_public_key[32];
+	 typedef unsigned char curve25519_secret_key[32];
+   Or just use binary strings?
+ *
+ */
+
+/* proto void waves_public_key_to_address(const curve25519_public_key public_key, const unsigned char network_byte, unsigned char address[26]); */
+bool waves_sign_message(const curve25519_secret_key *private_key /* 32 bytes */, const unsigned char *message,
+                            size_t message_size, curve25519_signature signature /* 64 bytes */);
+bool waves_sign_message_custom_random(const curve25519_secret_key *private_key /* 32 bytes */, const unsigned char *message,
+                                          const size_t message_size, curve25519_signature signature /* 64 bytes */,
+                                          unsigned char *random64 /* 64 bytes */);
+bool waves_verify_message(const curve25519_public_key *public_key, const unsigned char *message,
+                              const size_t message_size, const curve25519_signature signature);
+void waves_seed_to_address(const unsigned char *key, unsigned char network_byte, unsigned char *output);
+#endif
 
 /* API }}}*/
 

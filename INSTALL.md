@@ -3,6 +3,8 @@ INSTALLATION OF EV PECL EXTENSION
 
 Currently GNU/Linux platforms supported only.
 
+*It is highly recommended to install `pgk-config`*, if it is not installed yet.
+
 AUTOMATIC INSTALLATION
 ----------------------
 
