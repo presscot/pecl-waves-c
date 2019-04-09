@@ -29,12 +29,40 @@
 ZEND_BEGIN_ARG_INFO_EX(arginfo_waves_secure_hash, 0, 0, 1)
 	ZEND_ARG_INFO(0, message)
 ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_INFO_EX(arginfo_waves_sign_message, 0, 0, 2)
+	ZEND_ARG_INFO(0, private_key)
+	ZEND_ARG_INFO(0, message)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_INFO_EX(arginfo_waves_sign_message_custom_random, 0, 0, 3)
+	ZEND_ARG_INFO(0, private_key)
+	ZEND_ARG_INFO(0, message)
+	ZEND_ARG_INFO(0, random)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_INFO_EX(arginfo_waves_base58_encode_decode, 0, 0, 1)
+	ZEND_ARG_INFO(0, input)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_INFO_EX(arginfo_waves_verify_message, 0, 0, 3)
+	ZEND_ARG_INFO(0, public_key)
+	ZEND_ARG_INFO(0, message)
+	ZEND_ARG_INFO(0, signature)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_INFO_EX(arginfo_waves_seed_to_address, 0, 0, 2)
+	ZEND_ARG_INFO(0, key)
+	ZEND_ARG_INFO(0, network_byte)
+ZEND_END_ARG_INFO()
 /* ARG_INFO }}} */
 
 /* {{{ waves_functions[] */
 const zend_function_entry waves_functions[] = {
 	PHP_FE(waves_secure_hash, arginfo_waves_secure_hash)
-	PHP_FE_END /* Must be the last line in eio_functions[] */
+	PHP_FE(waves_sign_message, arginfo_waves_sign_message)
+	PHP_FE(waves_sign_message_custom_random, arginfo_waves_sign_message_custom_random)
+	PHP_FE(waves_base58_encode, arginfo_waves_base58_encode_decode)
+	PHP_FE(waves_base58_decode, arginfo_waves_base58_encode_decode)
+	PHP_FE(waves_verify_message, arginfo_waves_verify_message)
+	PHP_FE(waves_seed_to_address, arginfo_waves_seed_to_address)
+	PHP_FE(waves_public_key_to_address, arginfo_waves_seed_to_address)
+	PHP_FE_END /* Must be the last line in waves_functions[] */
 };
 /* }}} */
 

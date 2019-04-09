@@ -14,7 +14,11 @@
    +----------------------------------------------------------------------+
 */
 #include "php_waves.h"
+#include "Zend/zend_portability.h"
 #include "priv.h"
+
+/* And address is expected to be 26 bytes long (without terminating 0 byte) */
+#define WAVES_ADDRESS_BYTES 26
 
 /* {{{ waves_module_entry */
 zend_module_entry waves_module_entry = {
@@ -103,28 +107,269 @@ PHP_FUNCTION(waves_secure_hash)
 	waves_secure_hash((const uint8_t *)message, message_len, hash);
 	RETURN_STRINGL((const char *)hash, sizeof(hash));
 }
+/*}}}*/
 
-#if 0
 /**
- * TODO: Maybe define resources for the following types?
+ * {{{ proto string|null waves_sign_message(string $private_key, string $message);
  *
-	 typedef unsigned char curve25519_signature[64];
-	 typedef unsigned char curve25519_public_key[32];
-	 typedef unsigned char curve25519_secret_key[32];
-   Or just use binary strings?
- *
+ * Returns signature on success, otherwise NULL.
  */
+PHP_FUNCTION(waves_sign_message)
+{
+	char *message;
+	char *priv_key;
+	size_t message_len;
+	size_t priv_key_len;
+	curve25519_signature signature;
 
-/* proto void waves_public_key_to_address(const curve25519_public_key public_key, const unsigned char network_byte, unsigned char address[26]); */
-bool waves_sign_message(const curve25519_secret_key *private_key /* 32 bytes */, const unsigned char *message,
-                            size_t message_size, curve25519_signature signature /* 64 bytes */);
-bool waves_sign_message_custom_random(const curve25519_secret_key *private_key /* 32 bytes */, const unsigned char *message,
-                                          const size_t message_size, curve25519_signature signature /* 64 bytes */,
-                                          unsigned char *random64 /* 64 bytes */);
-bool waves_verify_message(const curve25519_public_key *public_key, const unsigned char *message,
-                              const size_t message_size, const curve25519_signature signature);
-void waves_seed_to_address(const unsigned char *key, unsigned char network_byte, unsigned char *output);
-#endif
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss",
+				&priv_key, &priv_key_len,
+				&message, &message_len) == FAILURE) {
+		return;
+	}
+
+	if (priv_key_len != 32) {
+		/* TODO: throw exception */
+		php_error_docref(NULL, E_ERROR,
+				"Private key must be 32 bytes in length, got %d bytes",
+				priv_key_len);
+		return;
+	}
+
+	if (waves_sign_message((const curve25519_secret_key *)priv_key,
+				(const unsigned char *)message,
+				message_len, signature)) {
+		RETURN_STRINGL((const char *)signature, sizeof(curve25519_signature));
+	}
+	/* TODO: throw exception? */
+}
+/*}}}*/
+
+/**
+ * {{{ proto string|null waves_sign_message_custom_random(string $private_key, string $message, string $random);
+ *
+ * $random is a 64-byte binary sequence.
+ *
+ * Returns signature on success, otherwise NULL.
+ */
+PHP_FUNCTION(waves_sign_message_custom_random)
+{
+	char *message;
+	char *priv_key;
+	char *random;
+	size_t message_len;
+	size_t priv_key_len;
+	size_t random_len;
+	curve25519_signature signature;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "sss",
+				&priv_key, &priv_key_len,
+				&message, &message_len,
+				&random, &random_len) == FAILURE) {
+		return;
+	}
+
+	if (priv_key_len != 32) {
+		/* TODO: throw exception */
+		php_error_docref(NULL, E_ERROR,
+				"Private key must be 32 bytes in length, got %d bytes",
+				priv_key_len);
+		return;
+	}
+	if (random_len != 64) {
+		/* TODO: throw exception */
+		php_error_docref(NULL, E_ERROR,
+				"Random sequence expected to be 64 bytes in length, got %d bytes",
+				random_len);
+		return;
+	}
+
+	if (waves_sign_message_custom_random((const curve25519_secret_key *)priv_key,
+				(const unsigned char *)message,
+				message_len, signature,
+				(unsigned char *)random)) {
+		RETURN_STRINGL((const char *)signature, sizeof(curve25519_signature));
+	}
+	/* TODO: throw exception? */
+}
+/*}}}*/
+
+/**
+ * {{{ proto string|null waves_base58_encode(string $in)
+ */
+PHP_FUNCTION(waves_base58_encode)
+{
+	char *in;
+	size_t in_len;
+	char *out;
+	size_t out_len;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s",
+				&in, &in_len) == FAILURE) {
+		return;
+	}
+
+	out_len = b58_length_from_bytes(in_len);
+	out = emalloc(sizeof(char) * out_len);
+	if (!out) {
+		/* TODO: Throw exception */
+		php_error_docref(NULL, E_ERROR,
+				"Failed to allocate %ld bytes",
+				sizeof(char) * out_len);
+		return;
+	}
+
+	out_len = base58_encode(out, (const unsigned char *)in, in_len);
+	/* out_len includes the terminating zero byte, so we decrement it */
+	RETVAL_STRINGL(out, --out_len);
+}
+/*}}}*/
+
+/**
+ * {{{ proto string|null waves_base58_decode(string $in)
+ */
+PHP_FUNCTION(waves_base58_decode)
+{
+	char *in;
+	size_t in_len;
+	char *out;
+	size_t out_len;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s",
+				&in, &in_len) == FAILURE) {
+		return;
+	}
+
+	if (in_len == 0) {
+		RETURN_EMPTY_STRING();
+	}
+
+	out_len = bytes_length_from_b58(in_len);
+	out = emalloc(sizeof(char) * out_len);
+	if (!out) {
+		/* TODO: Throw exception */
+		php_error_docref(NULL, E_ERROR,
+				"Failed to allocate %ld bytes",
+				sizeof(char) * out_len);
+		return;
+	}
+
+	out_len = base58_decode((unsigned char *)out, in);
+	ZEND_ASSERT(out_len);
+	RETVAL_STRINGL(out, out_len);
+}
+/*}}}*/
+
+/**
+ * {{{ proto bool waves_verify_message(string $public_key, string $message, string $signature)
+ */
+PHP_FUNCTION(waves_verify_message)
+{
+	char *public_key;
+	char *message;
+	curve25519_signature signature;
+	size_t public_key_len;
+	size_t message_len;
+	size_t signature_len;
+	bool result;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "sss",
+				&public_key, &public_key_len,
+				&message, &message_len,
+				&signature, &signature_len) == FAILURE) {
+		return;
+	}
+
+	result = waves_verify_message((const curve25519_public_key *)public_key,
+				(const unsigned char *)message, message_len,
+				signature);
+	if (!result) {
+		RETURN_FALSE;
+	}
+	RETVAL_TRUE;
+}
+/*}}}*/
+
+/**
+* {{{ proto string|null waves_seed_to_address(string $key, string $network_byte)
+*/
+PHP_FUNCTION(waves_seed_to_address)
+{
+	char *key;
+	char *network_byte;
+	char *out;
+	size_t key_len;
+	size_t network_byte_len;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss",
+				&key, &key_len,
+				&network_byte, &network_byte_len) == FAILURE) {
+		return;
+	}
+
+	if (network_byte_len != 1) {
+		php_error_docref(NULL, E_ERROR,
+				"Network byte length expected to be one byte long, got %ld bytes",
+				network_byte_len);
+		return;
+	}
+
+	out = emalloc(WAVES_ADDRESS_BYTES);
+	if (!out) {
+		/* TODO: Throw an exception */
+		php_error_docref(NULL, E_ERROR,
+				"Failed to allocate %ld bytes", WAVES_ADDRESS_BYTES);
+		return;
+	}
+
+	waves_seed_to_address((const unsigned char *)key, (unsigned char)network_byte[0], (unsigned char *)out);
+	RETURN_STRINGL(out, WAVES_ADDRESS_BYTES);
+}
+/*}}}*/
+
+/**
+* {{{ proto string|null waves_public_key_to_address(string $public_key, string $network_byte)
+*/
+PHP_FUNCTION(waves_public_key_to_address)
+{
+	char *public_key;
+	char *network_byte;
+	char *out;
+	size_t public_key_len;
+	size_t network_byte_len;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss",
+				&public_key, &public_key_len,
+				&network_byte, &network_byte_len) == FAILURE) {
+		return;
+	}
+
+	if (network_byte_len != 1) {
+		php_error_docref(NULL, E_ERROR,
+				"Network byte length expected to be one byte long, got %ld bytes",
+				network_byte_len);
+		return;
+	}
+	if (public_key_len != 32) {
+		/* TODO: throw exception */
+		php_error_docref(NULL, E_ERROR,
+				"Public key must be 32 bytes in length, got %d bytes",
+				public_key_len);
+		return;
+	}
+
+	out = emalloc(WAVES_ADDRESS_BYTES);
+	if (!out) {
+		/* TODO: Throw an exception */
+		php_error_docref(NULL, E_ERROR,
+				"Failed to allocate %ld bytes", WAVES_ADDRESS_BYTES);
+		return;
+	}
+
+	waves_public_key_to_address((const unsigned char *)public_key, (unsigned char)network_byte[0], (unsigned char *)out);
+	RETURN_STRINGL(out, WAVES_ADDRESS_BYTES);
+}
+/*}}}*/
 
 /* API }}}*/
 
