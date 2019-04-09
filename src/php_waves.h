@@ -24,8 +24,8 @@
 extern zend_module_entry waves_module_entry;
 #define phpext_waves_ptr &waves_module_entry
 
-zend_class_entry *php_event_get_exception_base(int root);
-zend_class_entry *php_event_get_exception(void);
+zend_class_entry *php_waves_get_exception_base(int root);
+zend_class_entry *php_waves_get_exception(void);
 
 PHP_MINIT_FUNCTION(waves);
 PHP_MSHUTDOWN_FUNCTION(waves);
@@ -33,14 +33,14 @@ PHP_RINIT_FUNCTION(waves);
 PHP_RSHUTDOWN_FUNCTION(waves);
 PHP_MINFO_FUNCTION(waves);
 
-#if defined(COMPILE_DL_EVENT)
+#if defined(COMPILE_DL_WAVES)
 ZEND_TSRMLS_CACHE_EXTERN();
 #endif
 
 #ifdef ZTS
-# define WAVES_G(v) TSRMG(event_globals_id, zend_event_globals *, v)
+# define WAVES_G(v) TSRMG(waves_globals_id, zend_waves_globals *, v)
 #else
-# define WAVES_G(v) (event_globals.v)
+# define WAVES_G(v) (waves_globals.v)
 #endif
 
 #ifdef PHP_WAVES_DEBUG

@@ -14,11 +14,40 @@
    +----------------------------------------------------------------------+
 */
 #include "php_waves.h"
-#include "Zend/zend_portability.h"
+#include "zend_exceptions.h"
+#include "ext/spl/spl_exceptions.h"
 #include "priv.h"
 
 /* And address is expected to be 26 bytes long (without terminating 0 byte) */
 #define WAVES_ADDRESS_BYTES 26
+/* A public key is expected to be 32 bytes in length */
+#define WAVES_PUBLIC_KEY_BYTES 32
+/* A private key is expected to be 32 bytes in length */
+#define WAVES_PRIVATE_KEY_BYTES 32
+/* Length of a secure hash, in bytes */
+#define WAVES_SECURE_HASH_BYTES 32
+/* Length of a random seed (passed as an argument to waves_sign_message_custom_random), in bytes */
+#define WAVES_RANDOM_SEED_BYTES 64
+
+zend_class_entry *php_waves_exception_ce;
+
+/*{{{ Private */
+
+zend_class_entry *php_waves_get_exception_base(int root) /* {{{ */
+{
+	if (!root) {
+		return spl_ce_RuntimeException;
+	}
+	return zend_ce_exception;
+}
+/* }}} */
+
+zend_class_entry *php_waves_get_exception(void)/*{{{*/
+{
+	return php_waves_exception_ce;
+}/*}}}*/
+
+/* Private }}}*/
 
 /* {{{ waves_module_entry */
 zend_module_entry waves_module_entry = {
@@ -47,6 +76,12 @@ ZEND_GET_MODULE(waves)
 /* {{{ PHP_MINIT_FUNCTION */
 PHP_MINIT_FUNCTION(waves)
 {
+	zend_class_entry ce_exception;
+
+	INIT_CLASS_ENTRY(ce_exception, "WavesException", NULL);
+	php_waves_exception_ce = zend_register_internal_class_ex(&ce_exception, php_waves_get_exception_base(0));
+	zend_declare_property_null(php_waves_exception_ce, "errorInfo", sizeof("errorInfo") - 1, ZEND_ACC_PUBLIC);
+
 	return SUCCESS;
 }
 /* }}} */
@@ -98,7 +133,7 @@ PHP_FUNCTION(waves_secure_hash)
 {
 	char *message;
 	size_t message_len;
-	uint8_t hash[32];
+	uint8_t hash[WAVES_SECURE_HASH_BYTES];
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s",
 				&message, &message_len) == FAILURE) {
@@ -110,9 +145,12 @@ PHP_FUNCTION(waves_secure_hash)
 /*}}}*/
 
 /**
- * {{{ proto string|null waves_sign_message(string $private_key, string $message);
+ * {{{ proto string waves_sign_message(string $private_key, string $message);
  *
  * Returns signature on success, otherwise NULL.
+ *
+ * Throws InvalidArgumentException
+ * Throws WavesException
  */
 PHP_FUNCTION(waves_sign_message)
 {
@@ -128,11 +166,10 @@ PHP_FUNCTION(waves_sign_message)
 		return;
 	}
 
-	if (priv_key_len != 32) {
-		/* TODO: throw exception */
-		php_error_docref(NULL, E_ERROR,
-				"Private key must be 32 bytes in length, got %d bytes",
-				priv_key_len);
+	if (priv_key_len != WAVES_PRIVATE_KEY_BYTES) {
+		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0,
+				"Private key must be %ld bytes in length, got %d bytes",
+				WAVES_PRIVATE_KEY_BYTES, priv_key_len);
 		return;
 	}
 
@@ -141,16 +178,20 @@ PHP_FUNCTION(waves_sign_message)
 				message_len, signature)) {
 		RETURN_STRINGL((const char *)signature, sizeof(curve25519_signature));
 	}
-	/* TODO: throw exception? */
+	zend_throw_exception_ex(php_waves_get_exception(), 0,
+			"Failed to sign message '%s'", message);
 }
 /*}}}*/
 
 /**
- * {{{ proto string|null waves_sign_message_custom_random(string $private_key, string $message, string $random);
+ * {{{ proto string waves_sign_message_custom_random(string $private_key, string $message, string $random);
  *
  * $random is a 64-byte binary sequence.
  *
  * Returns signature on success, otherwise NULL.
+ *
+ * Throws InvalidArgumentException
+ * Throws WavesException
  */
 PHP_FUNCTION(waves_sign_message_custom_random)
 {
@@ -169,18 +210,16 @@ PHP_FUNCTION(waves_sign_message_custom_random)
 		return;
 	}
 
-	if (priv_key_len != 32) {
-		/* TODO: throw exception */
-		php_error_docref(NULL, E_ERROR,
-				"Private key must be 32 bytes in length, got %d bytes",
-				priv_key_len);
+	if (priv_key_len != WAVES_PRIVATE_KEY_BYTES) {
+		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0,
+				"Private key must be %ld bytes in length, got %d bytes",
+				WAVES_PRIVATE_KEY_BYTES, priv_key_len);
 		return;
 	}
-	if (random_len != 64) {
-		/* TODO: throw exception */
-		php_error_docref(NULL, E_ERROR,
-				"Random sequence expected to be 64 bytes in length, got %d bytes",
-				random_len);
+	if (random_len != WAVES_RANDOM_SEED_BYTES) {
+		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0,
+				"Random sequence expected to be %ld bytes in length, got %d bytes",
+				WAVES_RANDOM_SEED_BYTES, random_len);
 		return;
 	}
 
@@ -190,12 +229,15 @@ PHP_FUNCTION(waves_sign_message_custom_random)
 				(unsigned char *)random)) {
 		RETURN_STRINGL((const char *)signature, sizeof(curve25519_signature));
 	}
-	/* TODO: throw exception? */
+	zend_throw_exception_ex(php_waves_get_exception(), 0,
+			"Failed to sign message '%s' with random sequence '%s'", message, random);
 }
 /*}}}*/
 
 /**
  * {{{ proto string|null waves_base58_encode(string $in)
+ *
+ * Throws WavesException
  */
 PHP_FUNCTION(waves_base58_encode)
 {
@@ -212,8 +254,7 @@ PHP_FUNCTION(waves_base58_encode)
 	out_len = b58_length_from_bytes(in_len);
 	out = emalloc(sizeof(char) * out_len);
 	if (!out) {
-		/* TODO: Throw exception */
-		php_error_docref(NULL, E_ERROR,
+		zend_throw_exception_ex(php_waves_get_exception(), 0,
 				"Failed to allocate %ld bytes",
 				sizeof(char) * out_len);
 		return;
@@ -247,15 +288,14 @@ PHP_FUNCTION(waves_base58_decode)
 	out_len = bytes_length_from_b58(in_len);
 	out = emalloc(sizeof(char) * out_len);
 	if (!out) {
-		/* TODO: Throw exception */
-		php_error_docref(NULL, E_ERROR,
+		zend_throw_exception_ex(php_waves_get_exception(), 0,
 				"Failed to allocate %ld bytes",
 				sizeof(char) * out_len);
 		return;
 	}
 
 	out_len = base58_decode((unsigned char *)out, in);
-	ZEND_ASSERT(out_len);
+	PHP_WAVES_ASSERT(out_len);
 	RETVAL_STRINGL(out, out_len);
 }
 /*}}}*/
@@ -292,6 +332,8 @@ PHP_FUNCTION(waves_verify_message)
 
 /**
 * {{{ proto string|null waves_seed_to_address(string $key, string $network_byte)
+*
+* Throws WavesException
 */
 PHP_FUNCTION(waves_seed_to_address)
 {
@@ -316,9 +358,9 @@ PHP_FUNCTION(waves_seed_to_address)
 
 	out = emalloc(WAVES_ADDRESS_BYTES);
 	if (!out) {
-		/* TODO: Throw an exception */
-		php_error_docref(NULL, E_ERROR,
-				"Failed to allocate %ld bytes", WAVES_ADDRESS_BYTES);
+		zend_throw_exception_ex(php_waves_get_exception(), 0,
+				"Failed to allocate %ld bytes",
+				WAVES_ADDRESS_BYTES);
 		return;
 	}
 
@@ -350,19 +392,18 @@ PHP_FUNCTION(waves_public_key_to_address)
 				network_byte_len);
 		return;
 	}
-	if (public_key_len != 32) {
-		/* TODO: throw exception */
-		php_error_docref(NULL, E_ERROR,
-				"Public key must be 32 bytes in length, got %d bytes",
-				public_key_len);
+	if (public_key_len != WAVES_PUBLIC_KEY_BYTES) {
+		zend_throw_exception_ex(php_waves_get_exception(), 0,
+				"Public key must be %ld bytes in length, got %d bytes",
+				WAVES_PUBLIC_KEY_BYTES, public_key_len);
 		return;
 	}
 
 	out = emalloc(WAVES_ADDRESS_BYTES);
 	if (!out) {
-		/* TODO: Throw an exception */
-		php_error_docref(NULL, E_ERROR,
-				"Failed to allocate %ld bytes", WAVES_ADDRESS_BYTES);
+		zend_throw_exception_ex(php_waves_get_exception(), 0,
+				"Failed to allocate %ld bytes",
+				WAVES_ADDRESS_BYTES);
 		return;
 	}
 
