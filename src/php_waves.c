@@ -307,11 +307,10 @@ PHP_FUNCTION(waves_verify_message)
 {
 	char *public_key;
 	char *message;
-	curve25519_signature signature;
+	char *signature;
 	size_t public_key_len;
 	size_t message_len;
 	size_t signature_len;
-	bool result;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "sss",
 				&public_key, &public_key_len,
@@ -320,13 +319,12 @@ PHP_FUNCTION(waves_verify_message)
 		return;
 	}
 
-	result = waves_verify_message((const curve25519_public_key *)public_key,
-				(const unsigned char *)message, message_len,
-				signature);
-	if (!result) {
-		RETURN_FALSE;
+	if (waves_verify_message((const curve25519_public_key *)public_key,
+			(const unsigned char *)message,
+			message_len, (const curve25519_signature *)signature)) {
+		RETURN_TRUE;
 	}
-	RETVAL_TRUE;
+	RETVAL_FALSE;
 }
 /*}}}*/
 
