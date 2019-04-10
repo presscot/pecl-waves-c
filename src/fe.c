@@ -50,6 +50,11 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_waves_seed_to_address, 0, 0, 2)
 	ZEND_ARG_INFO(0, key)
 	ZEND_ARG_INFO(0, network_byte)
 ZEND_END_ARG_INFO()
+#if 0
+ZEND_BEGIN_ARG_INFO_EX(arginfo_waves_private_key_arg, 0, 0, 1)
+	ZEND_ARG_INFO(0, private_key)
+ZEND_END_ARG_INFO()
+#endif
 /* ARG_INFO }}} */
 
 /* {{{ waves_functions[] */
@@ -62,6 +67,9 @@ const zend_function_entry waves_functions[] = {
 	PHP_FE(waves_verify_message, arginfo_waves_verify_message)
 	PHP_FE(waves_seed_to_address, arginfo_waves_seed_to_address)
 	PHP_FE(waves_public_key_to_address, arginfo_waves_seed_to_address)
+#if 0
+	PHP_FE(waves_generate_public_key, arginfo_waves_private_key_arg)
+#endif
 	PHP_FE_END /* Must be the last line in waves_functions[] */
 };
 /* }}} */

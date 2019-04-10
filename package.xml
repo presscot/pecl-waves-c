@@ -1,11 +1,10 @@
 <?xml version="1.0"?>
 <package xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
-  <name>ev</name>
+  <name>waves</name>
   <channel>pecl.php.net</channel>
-  <summary>Provides interface to libev library</summary>
+  <summary>Provides interface to libwaves_c library</summary>
   <description>
-  ev provides interface to libev library - high performance
-  full-featured event loop written in C.
+  Waves extension provides interface to libwaves_c library.
   </description>
   <lead>
     <name>Ruslan Osmanov</name>
@@ -13,697 +12,82 @@
     <email>osmanov@php.net</email>
     <active>yes</active>
   </lead>
-  <date>2017-10-24</date>
-  <!--{{{ Current version -->
+  <date>2019-04-10</date>
+  <!-- Current version -->
   <version>
-    <release>1.0.5</release>
-    <api>0.3.0</api>
+    <release>1.0.0</release>
+    <api>1.0.0</api>
   </version>
   <stability>
-    <release>stable</release>
-    <api>stable</api>
+    <release>alpha</release>
+    <api>alpha</api>
   </stability>
   <license uri="http://www.php.net/license">PHP</license>
   <notes><![CDATA[
-    Fixed bug #33 in PHP 7 where the return value of EvPeriodic reschedule callback was ignored
+    Initial release
   ]]></notes>
-  <!--}}}-->
-  <!--{{{ Contents -->
+  <!-- contents -->
   <contents>
     <dir name="/">
-      <file role="doc" name="CREDITS"/>
+      <file role="src" name="config.m4"/>
+      <file role="doc" name="README.md"/>
       <file role="doc" name="INSTALL.md"/>
       <file role="doc" name="LICENSE"/>
-      <file role="doc" name="README.md"/>
-      <file role="doc" name="TODO.md"/>
-      <file role="src" name="config.m4"/>
-      <file role="src" name="config.w32"/>
-      <dir name="php5">
-        <file role="src" name="check.c"/>
-        <file role="src" name="child.c"/>
+      <dir name="src">
         <file role="src" name="common.h"/>
-        <file role="src" name="embed.c"/>
-        <file role="src" name="embed.h"/>
-        <file role="src" name="ev.c"/>
-        <file role="src" name="evwrap.c"/>
         <file role="src" name="fe.c"/>
         <file role="src" name="fe.h"/>
-        <file role="src" name="fork.c"/>
-        <file role="src" name="idle.c"/>
-        <file role="src" name="io.c"/>
-        <file role="src" name="loop.c"/>
-        <file role="src" name="macros.h"/>
-        <file role="src" name="pe.c"/>
-        <file role="src" name="periodic.c"/>
-        <file role="src" name="php_ev.h"/>
-        <file role="src" name="prepare.c"/>
+        <file role="src" name="php_waves.c"/>
+        <file role="src" name="php_waves.h"/>
         <file role="src" name="priv.h"/>
-        <file role="src" name="signal.c"/>
-        <file role="src" name="stat.c"/>
-        <file role="src" name="timer.c"/>
-        <file role="src" name="types.h"/>
-        <file role="src" name="util.c"/>
-        <file role="src" name="util.h"/>
-        <file role="src" name="watcher.c"/>
-        <file role="src" name="watcher.h"/>
-      </dir>
-      <dir name="php7">
-        <file role="src" name="check.c"/>
-        <file role="src" name="child.c"/>
-        <file role="src" name="common.h"/>
-        <file role="src" name="embed.c"/>
-        <file role="src" name="embed.h"/>
-        <file role="src" name="ev.c"/>
-        <file role="src" name="evwrap.c"/>
-        <file role="src" name="fe.c"/>
-        <file role="src" name="fe.h"/>
-        <file role="src" name="fork.c"/>
-        <file role="src" name="idle.c"/>
-        <file role="src" name="io.c"/>
-        <file role="src" name="loop.c"/>
-        <file role="src" name="macros.h"/>
-        <file role="src" name="pe.c"/>
-        <file role="src" name="periodic.c"/>
-        <file role="src" name="php_ev.h"/>
-        <file role="src" name="prepare.c"/>
-        <file role="src" name="priv.h"/>
-        <file role="src" name="signal.c"/>
-        <file role="src" name="stat.c"/>
-        <file role="src" name="timer.c"/>
-        <file role="src" name="types.h"/>
-        <file role="src" name="util.c"/>
-        <file role="src" name="util.h"/>
-        <file role="src" name="watcher.c"/>
-        <file role="src" name="watcher.h"/>
       </dir>
       <dir name="tests">
-        <file role="src" name="01_load.phpt"/>
-        <file role="src" name="02_ev_construct_variation.phpt"/>
-        <file role="src" name="03_ev_loop_props.phpt"/>
-        <file role="src" name="04_timer_variation.phpt"/>
-        <file role="src" name="05_timer.phpt"/>
-        <file role="src" name="06_keepalive.phpt"/>
-        <file role="src" name="07_stat.phpt"/>
-        <file role="src" name="08_priority.phpt"/>
-        <file role="src" name="09_loop_timer.phpt"/>
-        <file role="src" name="10_signal.phpt"/>
-        <file role="src" name="11_watcher_data.phpt"/>
-        <file role="src" name="12_watcher_leak.phpt"/>
-        <file role="src" name="bug24.phpt"/>
-        <file role="src" name="bug33.phpt"/>
-        <file role="src" name="bug64788.phpt"/>
-        <file role="src" name="13_watcher_data.phpt"/>
-        <file role="src" name="14_get_gc.phpt"/>
-        <file role="src" name="15_periodic.phpt"/>
-        <file role="src" name="16_generator_cb.phpt"/>
-      </dir>
-      <dir name="libev">
-        <file role="doc" name="LICENSE"/>
-        <file role="doc" name="README"/>
-        <file role="src" name="ev.c"/>
-        <file role="src" name="ev.h"/>
-        <file role="src" name="ev_epoll.c"/>
-        <file role="src" name="ev_kqueue.c"/>
-        <file role="src" name="ev_poll.c"/>
-        <file role="src" name="ev_port.c"/>
-        <file role="src" name="ev_select.c"/>
-        <file role="src" name="ev_vars.h"/>
-        <file role="src" name="ev_win32.c"/>
-        <file role="src" name="ev_wrap.h"/>
-        <file role="src" name="libev.m4"/>
+        <file role="src" name="001_waves_secure_hash.phpt"/>
+        <file role="src" name="002_waves_sign_message_custom_random.phpt"/>
+        <file role="src" name="002_waves_sign_message.phpt"/>
+        <file role="src" name="003_waves_base58_encode.phpt"/>
+        <file role="src" name="004_waves_base58_decode.phpt"/>
+        <file role="src" name="005_waves_public_key_to_address_error.phpt"/>
+        <file role="src" name="005_waves_public_key_to_address.phpt"/>
+        <file role="src" name="005_waves_seed_to_address.phpt"/>
+        <file role="src" name="006_waves_generate_public_key.phpt"/>
       </dir>
     </dir>
   </contents>
-  <!--}}}-->
   <dependencies>
     <required>
       <php>
-        <min>5.4.0</min>
+        <min>7.1.0</min>
       </php>
       <pearinstaller>
         <min>1.4.0a1</min>
       </pearinstaller>
-      <!--
       <os>
         <name>linux</name>
       </os>
-      -->
     </required>
   </dependencies>
-  <providesextension>ev</providesextension>
+  <providesextension>waves</providesextension>
   <extsrcrelease>
-    <configureoption default="no" name="enable-ev-debug" prompt="Enable internal debugging in ev"/>
+    <configureoption default="no" name="with-waves" prompt="Include waves support"/>
+    <configureoption default="no" name="enable-waves-debug" prompt="Enable internal debugging in waves"/>
   </extsrcrelease>
-  <!--{{{ changelog-->
   <changelog>
-    <!--{{{ 1.0.5 -->
-    <release>
-      <version>
-        <release>1.0.5</release>
-        <api>0.3.0</api>
-      </version>
-      <stability>
-        <release>stable</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-    Fixed bug #33 in PHP 7 where the return value of EvPeriodic reschedule callback was ignored
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 1.0.4 -->
-    <release>
-      <version>
-        <release>1.0.4</release>
-        <api>0.3.0</api>
-      </version>
-      <stability>
-        <release>stable</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-    Fix: memory leak in PHP 7.0.13
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 1.0.3 -->
-    <release>
-      <version>
-        <release>1.0.3</release>
-        <api>0.3.0</api>
-      </version>
-      <stability>
-        <release>stable</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-    Fix: issue #29 where object properties were wrapped in double quotes
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 1.0.2 -->
-    <release>
-      <version>
-        <release>1.0.2</release>
-        <api>0.3.0</api>
-      </version>
-      <stability>
-        <release>stable</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-    Fix: issue #28 where generator test failed with PHP 5.4
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 1.0.1 -->
-    <release>
-      <version>
-        <release>1.0.1</release>
-        <api>0.3.0</api>
-      </version>
-      <stability>
-        <release>stable</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-    Fix: issue #27 where callbacks with < 2 arguments were rejected
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 1.0.0 -->
+    <!-- 1.0.0 -->
     <release>
       <version>
         <release>1.0.0</release>
-        <api>0.3.0</api>
+        <api>1.0.0</api>
       </version>
       <stability>
-        <release>stable</release>
-        <api>stable</api>
+        <release>alpha</release>
+        <api>alpha</api>
       </stability>
       <license uri="http://www.php.net/license">PHP</license>
       <notes><![CDATA[
-    Fix: issue #24
-  ]]></notes>
+        Initial release
+        ]]></notes>
     </release>
-    <!--}}}-->
-    <!--{{{ 1.0.0RC9 -->
-    <release>
-      <version>
-        <release>1.0.0RC9</release>
-        <api>0.3.0</api>
-      </version>
-      <stability>
-        <release>beta</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-    Windows package fix
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 1.0.0RC7 -->
-    <release>
-      <version>
-        <release>1.0.0RC7</release>
-        <api>0.3.0</api>
-      </version>
-      <stability>
-        <release>beta</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-    Fixed PECL package
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 1.0.0RC6 -->
-    <release>
-      <version>
-        <release>1.0.0RC6</release>
-        <api>0.3.0</api>
-      </version>
-      <stability>
-        <release>beta</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-    Fixed Windows build
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 1.0.0RC5 -->
-    <release>
-      <version>
-        <release>1.0.0RC5</release>
-        <api>0.3.0</api>
-      </version>
-      <stability>
-        <release>beta</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-    Added Windows support
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 1.0.0RC4 -->
-    <release>
-      <version>
-        <release>1.0.0RC4</release>
-        <api>0.3.0</api>
-      </version>
-      <stability>
-        <release>beta</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-    Fix in PHP7: memory leak due to incorrect default loop destruction
-    Change: removed pthreads dependency(pthread_atfork setup for the ev_loop_fork(EV_DEFAULT) call)
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 1.0.0RC3-->
-    <release>
-      <version>
-        <release>1.0.0RC3</release>
-        <api>0.3.0</api>
-      </version>
-      <stability>
-        <release>beta</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-    Fix: issue #18
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 1.0.0RC2 -->
-    <release>
-      <version>
-        <release>1.0.0RC2</release>
-        <api>0.3.0</api>
-      </version>
-      <stability>
-        <release>beta</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-    Fix: EvChild::set() parameter parsing (thanks to Remi)
-    Fix: issue #16 where get_properties handler failed with segmentation fault
-    Fix: issue #17 where EgSignal::$signum property always returned NULL
-    Fix: EvStat::$path property always returned NULL
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 1.0.0RC1 -->
-    <release>
-      <version>
-        <release>1.0.0RC1</release>
-        <api>0.3.0</api>
-      </version>
-      <stability>
-        <release>beta</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-    Added PHP7 support
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 0.2.17 -->
-    <release>
-      <version>
-        <release>0.2.17</release>
-        <api>0.3.0</api>
-      </version>
-      <stability>
-        <release>stable</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-    EvIo::__construct() and EvIo::set() now throw Exception in case of invalid stream or file descriptor.
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 0.2.16 -->
-    <release>
-      <version>
-        <release>0.2.16</release>
-        <api>0.2.0</api>
-      </version>
-      <stability>
-        <release>stable</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-    Issue #13: Compilation issue in Mac OS X 10.11
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 0.2.15 -->
-    <release>
-      <version>
-        <release>0.2.15</release>
-        <api>0.2.0</api>
-      </version>
-      <stability>
-        <release>stable</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-    Issue #12: marked as CLI-only extension (the changes are actually missing in 0.2.14)
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 0.2.13 -->
-    <release>
-      <version>
-        <release>0.2.13</release>
-        <api>0.2.0</api>
-      </version>
-      <stability>
-        <release>stable</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-    Issue #11: pecl install ev command fails with non-standard PHP installation prefix.
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 0.2.12 -->
-    <release>
-      <version>
-        <release>0.2.12</release>
-        <api>0.2.0</api>
-      </version>
-      <stability>
-        <release>stable</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-        Fixed #10: Segfault in test suite for ZTS (thanks to Remi Collet)
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 0.2.11 -->
-    <release>
-      <version>
-        <release>0.2.11</release>
-        <api>0.2.0</api>
-      </version>
-      <stability>
-        <release>stable</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-  Fixed #7: static building was not supported(Tim)
-  Fixed #9: factory methods messed up the instance zval properties thus causing fatal errors in PHP 5.6
-  Fixed: EvWatcher::keepalive method didn't regard the default value of the 1st argument.
-  Pulled latest fixes from libev's upstream
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 0.2.10 -->
-    <release>
-      <version>
-        <release>0.2.10</release>
-        <api>0.2.0</api>
-      </version>
-      <stability>
-        <release>stable</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-  Fix: segmentation fault after watcher restart(Frank Mayer)
-  Fix: missing get_gc property handler
-  Fix: operators applied to uninitialized EvWatcher::data property caused unexpected results
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 0.2.9 -->
-    <release>
-      <version>
-        <release>0.2.9</release>
-        <api>0.2.0</api>
-      </version>
-      <stability>
-        <release>stable</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-  Fix: memory leaks in objects derived from EvWatcher
-  Refact: some frequent checks optimized
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 0.2.8 -->
-    <release>
-      <version>
-        <release>0.2.8</release>
-        <api>0.2.0</api>
-      </version>
-      <stability>
-        <release>stable</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-  Fix: segmentation fault in EvLoop/EvWatcher dtors caused by reference variables stored in 'data' property
-  Fix: EvLoop/EvWatcher object dtors sometimes didn't free the 'data' member until the script shutdown phase
-  Fix: get_properties property handler was not implemented for PHP >= 5.4.0
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 0.2.7 -->
-    <release>
-      <version>
-        <release>0.2.7</release>
-        <api>0.2.0</api>
-      </version>
-      <stability>
-        <release>stable</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-  Fix: because of a typo in ev.c dump stuff didn't work in PHP<5.5.0
-  Change: removed "Returning previously created default loop" warning
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 0.2.6 -->
-    <release>
-      <version>
-        <release>0.2.6</release>
-        <api>0.2.0</api>
-      </version>
-      <stability>
-        <release>stable</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-    Merged in 5lava/pecl-ev (pull request #1) @ Bitbucket
-    Fix: made php 5.5.0-compatible
-    Upgraded libev to version 4.15
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 0.2.5 -->
-    <version>
-      <release>0.2.5</release>
-      <api>0.2.0</api>
-    </version>
-    <stability>
-      <release>stable</release>
-      <api>stable</api>
-    </stability>
-    <license uri="http://www.php.net/license">PHP</license>
-    <notes><![CDATA[
-  Fix: build error due to return (void) from function returning int on Mac OS X
-  Fix: bug #64788 where var_dump() of EvIo watcher caused disfunction of whole event loop
-  ]]></notes>
-    <!--}}}-->
-    <!--{{{ 0.2.4 -->
-    <release>
-      <version>
-        <release>0.2.4</release>
-        <api>0.2.0</api>
-      </version>
-      <stability>
-        <release>stable</release>
-        <api>stable</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes><![CDATA[
-  Fix: build error in Mac OS X: inline php_ev_set_watcher_priority function had been exported as a library symbol
-  ]]></notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 0.2.3  -->
-    <version>
-      <release>0.2.3</release>
-      <api>0.2.0</api>
-    </version>
-    <stability>
-      <release>stable</release>
-      <api>stable</api>
-    </stability>
-    <license uri="http://www.php.net/license">PHP</license>
-    <notes><![CDATA[
-  Fixed build errors where sockets extension required, made optional(thanks to auroraeos on #php.pecl@efnet IRC).
-  Fixed build errors for non-threaded configuration.
-  Streams' casting fixed and improved.
-  ]]></notes>
-    <!--}}}-->
-    <!--{{{ 0.2.2 -->
-    <version>
-      <release>0.2.2</release>
-      <api>0.2.0</api>
-    </version>
-    <stability>
-      <release>stable</release>
-      <api>stable</api>
-    </stability>
-    <license uri="http://www.php.net/license">PHP</license>
-    <notes><![CDATA[
-  Fix: bug #3 where ev_loop_fork invoked with EV_DEFAULT_UC(thanks to John Chen)
-  Refact: callbacks' no_separation = 1(was 0)
-  Fix: typo in package.xml
-  Fix: markdown syntax
-  ]]></notes>
-    <!--}}}-->
-    <!--{{{ 0.2.1 -->
-    <version>
-      <release>0.2.1</release>
-      <api>0.2.0</api>
-    </version>
-    <stability>
-      <release>stable</release>
-      <api>stable</api>
-    </stability>
-    <license uri="http://www.php.net/license">PHP</license>
-    <notes><![CDATA[
-  Fix: get_property_ptr_ptr for zval properties was not supoprted. See
-  http://old.nabble.com/Can%27t-get-zval-write-property-handler-working-for-%2B%2B------%2B%2B-and-other-operators-to34843859.html
-  Fix: check for attempts to bind a signal to different event loops
-  ]]></notes>
-    <!--}}}-->
-    <!--{{{ 0.2.0 -->
-    <version>
-      <release>0.2.0</release>
-      <api>0.2.0</api>
-    </version>
-    <stability>
-      <release>stable</release>
-      <api>stable</api>
-    </stability>
-    <license uri="http://www.php.net/license">PHP</license>
-    <notes>
-  Change: moved ev_* functions to Ev singleton(due to some issues with reflection)
-  Change: renamed EvLoop::break to EvLoop::stop, and ev_break to Ev::stop
-  Change: moved all constants to Ev class
-  Fix: release version
-  Del: callback parameter from EvLoop constructor/factories
-  Change: watcher createStopped methods made final
-  Change: watcher factory methods made final
-  </notes>
-    <!--}}}-->
-    <!--{{{ 0.1.1 (beta) -->
-    <release>
-      <version>
-        <release>0.1.1</release>
-        <api>0.1.0</api>
-      </version>
-      <stability>
-        <release>beta</release>
-        <api>beta</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes>
-    Fix: PECL build error
-    </notes>
-    </release>
-    <!--}}}-->
-    <!--{{{ 0.1.0 (beta) -->
-    <release>
-      <version>
-        <release>0.1.0</release>
-        <api>0.1.0</api>
-      </version>
-      <stability>
-        <release>beta</release>
-        <api>beta</api>
-      </stability>
-      <license uri="http://www.php.net/license">PHP</license>
-      <notes>
-    Initial release
-    </notes>
-    </release>
-    <!--}}}-->
   </changelog>
-  <!--}}}-->
 </package>
 <!-- vim: set et sts=2 ts=2 sw=2 fdm=marker: -->

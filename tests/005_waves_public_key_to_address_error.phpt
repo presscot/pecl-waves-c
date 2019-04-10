@@ -10,5 +10,5 @@ try {
 }
 ?>
 --EXPECT--
-string(14) "WavesException"
+string(24) "InvalidArgumentException"
 string(50) "Public key must be 32 bytes in length, got 4 bytes"

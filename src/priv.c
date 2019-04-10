@@ -13,22 +13,24 @@
    | license@php.net so we can mail you a copy immediately.               |
    +----------------------------------------------------------------------+
 */
-#ifndef PHP_WAVES_FE_H
-#define PHP_WAVES_FE_H
+#include "common.h"
+#include "zend_exceptions.h"
+#include "ext/spl/spl_exceptions.h"
+#include "priv.h"
 
-PHP_FUNCTION(waves_secure_hash);
-PHP_FUNCTION(waves_sign_message);
-PHP_FUNCTION(waves_sign_message_custom_random);
-PHP_FUNCTION(waves_base58_encode);
-PHP_FUNCTION(waves_base58_decode);
-PHP_FUNCTION(waves_verify_message);
-PHP_FUNCTION(waves_seed_to_address);
-PHP_FUNCTION(waves_public_key_to_address);
-#if 0
-PHP_FUNCTION(waves_generate_public_key);
-#endif
+zend_class_entry *php_waves_get_exception_base(int root)/*{{{*/
+{
+	if (!root) {
+		return spl_ce_RuntimeException;
+	}
+	return zend_ce_exception;
+}/*}}}*/
 
-#endif /* PHP_WAVES_FE_H */
+zend_class_entry *php_waves_get_exception(void)/*{{{*/
+{
+	return php_waves_exception_ce;
+}/*}}}*/
+
 /*
  * vim600: fdm=marker
  * vim: noet sts=4 sw=4 ts=4
