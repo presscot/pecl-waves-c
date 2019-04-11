@@ -73,7 +73,7 @@ PHP_METHOD(WavesPrivateKey, sign)
 		}
 
 		if (waves_sign_message_custom_random(
-					(const curve25519_secret_key *)intern->key,
+					(const unsigned char *)intern->key,
 					(const unsigned char *)message,
 					message_len,
 					(unsigned char *)signature_intern->signature,
@@ -86,7 +86,7 @@ PHP_METHOD(WavesPrivateKey, sign)
 		return;
 	}
 
-	if (waves_sign_message((const curve25519_secret_key *)intern->key,
+	if (waves_sign_message((const unsigned char *)intern->key,
 				(const unsigned char *)message,
 				message_len, (unsigned char *)signature_intern->signature)) {
 		return;

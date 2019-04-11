@@ -22,7 +22,6 @@ PHP_FUNCTION(waves_sign_message);
 PHP_FUNCTION(waves_base58_encode);
 PHP_FUNCTION(waves_base58_decode);
 PHP_FUNCTION(waves_verify_message);
-PHP_FUNCTION(waves_seed_to_address);
 PHP_FUNCTION(waves_public_key_to_address);
 PHP_FUNCTION(waves_generate_public_key);
 

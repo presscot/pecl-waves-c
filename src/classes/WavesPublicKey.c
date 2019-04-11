@@ -59,9 +59,9 @@ PHP_METHOD(WavesPublicKey, verify)
 	intern = php_waves_public_key_object_fetch(Z_OBJ_P(getThis()));
 	PHP_WAVES_ASSERT(intern);
 
-  if (waves_verify_message((const curve25519_public_key *)intern->key,
+  if (waves_verify_message((const unsigned char *)intern->key,
         (const unsigned char *)message,
-        message_len, (const curve25519_signature *)signature_intern->signature)) {
+        message_len, (const unsigned char *)signature_intern->signature)) {
     RETURN_TRUE;
   }
 	RETVAL_FALSE;
@@ -111,7 +111,7 @@ PHP_METHOD(WavesPublicKey, fromPrivateKey)
 	intern = php_waves_public_key_object_fetch(Z_OBJ_P(return_value));
 	PHP_WAVES_ASSERT(intern);
 
-	private_key_intern = php_waves_public_key_object_fetch(Z_OBJ_P(private_key_zval));
+	private_key_intern = php_waves_private_key_object_fetch(Z_OBJ_P(private_key_zval));
 	PHP_WAVES_ASSERT(private_key_intern);
 
 	memcpy(private_key, private_key_intern->key, WAVES_PRIVATE_KEY_BYTES);

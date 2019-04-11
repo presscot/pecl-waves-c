@@ -828,7 +828,7 @@ PHP_FUNCTION(waves_sign_message)
 			return;
 		}
 
-		if (waves_sign_message_custom_random((const curve25519_secret_key *)priv_key,
+		if (waves_sign_message_custom_random((const unsigned char *)priv_key,
 					(const unsigned char *)message,
 					message_len, signature,
 					(unsigned char *)random)) {
@@ -839,7 +839,7 @@ PHP_FUNCTION(waves_sign_message)
 		return;
 	}
 
-	if (waves_sign_message((const curve25519_secret_key *)priv_key,
+	if (waves_sign_message((const unsigned char *)priv_key,
 				(const unsigned char *)message,
 				message_len, signature)) {
 		RETURN_STRINGL((const char *)signature, sizeof(curve25519_signature));
@@ -929,38 +929,12 @@ PHP_FUNCTION(waves_verify_message)
 		return;
 	}
 
-	if (waves_verify_message((const curve25519_public_key *)public_key,
+	if (waves_verify_message((const unsigned char *)public_key,
 			(const unsigned char *)message,
-			message_len, (const curve25519_signature *)signature)) {
+			message_len, (const unsigned char *)signature)) {
 		RETURN_TRUE;
 	}
 	RETVAL_FALSE;
-}
-/*}}}*/
-
-/* {{{ proto string waves_seed_to_address(string $key, string $network_byte)
-   Throws WavesException
-   Throws InvalidArgumentException */
-PHP_FUNCTION(waves_seed_to_address)
-{
-	char *key;
-	char *network_byte;
-	char *out;
-	size_t key_len;
-	size_t network_byte_len;
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss",
-				&key, &key_len,
-				&network_byte, &network_byte_len) == FAILURE) {
-		return;
-	}
-
-    CHECK_NETWORK_BYTE_LEN(network_byte_len);
-    WAVES_EMALLOC(out, WAVES_ADDRESS_BYTES);
-
-	waves_seed_to_address((const unsigned char *)key,
-			(unsigned char)network_byte[0], (unsigned char *)out);
-	RETURN_STRINGL(out, WAVES_ADDRESS_BYTES);
 }
 /*}}}*/
 

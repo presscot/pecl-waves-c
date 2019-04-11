@@ -44,8 +44,8 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_waves_verify_message, 0, 3, _IS_
 	ZEND_ARG_TYPE_INFO(0, message, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO(0, signature, IS_STRING, 0)
 ZEND_END_ARG_INFO()
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_waves_seed_to_address, 0, 2, IS_STRING, 0)
-	ZEND_ARG_TYPE_INFO(0, seed, IS_STRING, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_waves_public_key_to_address, 0, 2, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, key, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO(0, network_byte, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_waves_private_key_arg, 0, 1, IS_STRING, 0)
@@ -99,8 +99,7 @@ const zend_function_entry waves_functions[] = {
 	PHP_FE(waves_base58_encode, arginfo_waves_base58_encode_decode)
 	PHP_FE(waves_base58_decode, arginfo_waves_base58_encode_decode)
 	PHP_FE(waves_verify_message, arginfo_waves_verify_message)
-	PHP_FE(waves_seed_to_address, arginfo_waves_seed_to_address)
-	PHP_FE(waves_public_key_to_address, arginfo_waves_seed_to_address)
+	PHP_FE(waves_public_key_to_address, arginfo_waves_public_key_to_address)
 	PHP_FE(waves_generate_public_key, arginfo_waves_private_key_arg)
 	PHP_FE_END
 };

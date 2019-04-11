@@ -52,7 +52,6 @@
         <file role="src" name="004_waves_base58_decode.phpt"/>
         <file role="src" name="005_waves_public_key_to_address.phpt"/>
         <file role="src" name="005_waves_public_key_to_address_error.phpt"/>
-        <file role="src" name="005_waves_seed_to_address.phpt"/>
         <file role="src" name="006_waves_generate_public_key.phpt"/>
         <file role="src" name="007_waves_address_construct.phpt"/>
         <file role="src" name="007_waves_address_from_seed.phpt"/>
