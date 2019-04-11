@@ -37,6 +37,19 @@
 # include <TSRM.h>
 #endif
 
+/* And address is expected to be 26 bytes long (without terminating 0 byte) */
+#define WAVES_ADDRESS_BYTES 26
+/* A public key is expected to be 32 bytes in length */
+#define WAVES_PUBLIC_KEY_BYTES 32
+/* A private key is expected to be 32 bytes in length */
+#define WAVES_PRIVATE_KEY_BYTES 32
+/* Length of a secure hash, in bytes */
+#define WAVES_SECURE_HASH_BYTES 32
+/* Length of a random seed (passed as an argument to waves_sign_message_custom_random), in bytes */
+#define WAVES_RANDOM_SEED_BYTES 64
+/* Lenth of a valid signature, in bytes */
+#define WAVES_SIGNATURE_BYTES 64
+
 #endif /* PHP_WAVES_COMMON_H */
 
 /*

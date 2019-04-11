@@ -13,33 +13,36 @@
    | license@php.net so we can mail you a copy immediately.               |
    +----------------------------------------------------------------------+
 */
-#ifndef PHP_WAVES_FE_H
-#define PHP_WAVES_FE_H
-#include "php.h"
+#include "php_waves.h"
+#include "priv.h"
+#include "zend_exceptions.h"
+#include "ext/spl/spl_exceptions.h"
 
-PHP_FUNCTION(waves_secure_hash);
-PHP_FUNCTION(waves_sign_message);
-PHP_FUNCTION(waves_base58_encode);
-PHP_FUNCTION(waves_base58_decode);
-PHP_FUNCTION(waves_verify_message);
-PHP_FUNCTION(waves_seed_to_address);
-PHP_FUNCTION(waves_public_key_to_address);
-PHP_FUNCTION(waves_generate_public_key);
+/*{{{ proto WavesSignature::__construct(string $signature)
+ * Throws InvalidArgumentException
+ * Throws WavesException */
+PHP_METHOD(WavesSignature, __construct)
+{
+	char *signature;
+	size_t signature_len;
+	php_waves_signature_t *intern;
 
-PHP_METHOD(WavesAddress, __construct);
-PHP_METHOD(WavesAddress, fromSeed);
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s",
+				&signature, &signature_len) == FAILURE) {
+		return;
+	}
 
-PHP_METHOD(WavesPublicKey, __construct);
-PHP_METHOD(WavesPublicKey, getAddress);
-PHP_METHOD(WavesPublicKey, verify);
-PHP_METHOD(WavesPublicKey, fromPrivateKey);
+	CHECK_SIGNATURE_LEN(signature_len);
 
-PHP_METHOD(WavesSignature, __construct);
-
-PHP_METHOD(WavesPrivateKey, __construct);
-PHP_METHOD(WavesPrivateKey, sign);
-#endif /* PHP_WAVES_FE_H */
+	intern = php_waves_signature_object_fetch(Z_OBJ_P(getThis()));
+	PHP_WAVES_ASSERT(intern);
+	memcpy(intern->signature, signature, signature_len);
+}/*}}}*/
 /*
- * vim600: fdm=marker
- * vim: noet sts=4 sw=4 ts=4
+ * Local variables:
+ * tab-width: 4
+ * c-basic-offset: 4
+ * End:
+ * vim600: noet sw=4 ts=4 sts=4 fdm=marker
+ * vim<600: noet sw=4 ts=4 sts=4
  */

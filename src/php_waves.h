@@ -50,7 +50,6 @@ ZEND_TSRMLS_CACHE_EXTERN();
 #endif
 
 #endif /* PHP_WAVES_H */
-
 /*
  * Local variables:
  * tab-width: 4

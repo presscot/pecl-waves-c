@@ -12,7 +12,7 @@
     <email>osmanov@php.net</email>
     <active>yes</active>
   </lead>
-  <date>2019-04-10</date>
+  <date>2019-04-11</date>
   <!-- Current version -->
   <version>
     <release>1.0.0</release>
@@ -39,18 +39,27 @@
         <file role="src" name="fe.h"/>
         <file role="src" name="php_waves.c"/>
         <file role="src" name="php_waves.h"/>
+        <file role="src" name="priv.c"/>
         <file role="src" name="priv.h"/>
+        <file role="src" name="properties.c"/>
       </dir>
       <dir name="tests">
+        <file role="src" name="0010_waves_private_key_construct.phpt"/>
         <file role="src" name="001_waves_secure_hash.phpt"/>
-        <file role="src" name="002_waves_sign_message_custom_random.phpt"/>
+        <file role="src" name="002_waves_private_key_sign.phpt"/>
         <file role="src" name="002_waves_sign_message.phpt"/>
         <file role="src" name="003_waves_base58_encode.phpt"/>
         <file role="src" name="004_waves_base58_decode.phpt"/>
-        <file role="src" name="005_waves_public_key_to_address_error.phpt"/>
         <file role="src" name="005_waves_public_key_to_address.phpt"/>
+        <file role="src" name="005_waves_public_key_to_address_error.phpt"/>
         <file role="src" name="005_waves_seed_to_address.phpt"/>
         <file role="src" name="006_waves_generate_public_key.phpt"/>
+        <file role="src" name="007_waves_address_construct.phpt"/>
+        <file role="src" name="007_waves_address_from_seed.phpt"/>
+        <file role="src" name="008_waves_public_key_construct.phpt"/>
+        <file role="src" name="008_waves_public_key_get_address.phpt"/>
+        <file role="src" name="009_waves_signature_construct.phpt"/>
+        <file role="src" name="011_waves_generate_public_key.phpt"/>
       </dir>
     </dir>
   </contents>
