@@ -54,7 +54,6 @@
         <file role="src" name="005_waves_public_key_to_address_error.phpt"/>
         <file role="src" name="006_waves_generate_public_key.phpt"/>
         <file role="src" name="007_waves_address_construct.phpt"/>
-        <file role="src" name="007_waves_address_from_seed.phpt"/>
         <file role="src" name="008_waves_public_key_construct.phpt"/>
         <file role="src" name="008_waves_public_key_get_address.phpt"/>
         <file role="src" name="009_waves_signature_construct.phpt"/>
