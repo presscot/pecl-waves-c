@@ -51,6 +51,9 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_waves_private_key_arg, 0, 1, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO(0, private_key, IS_STRING, 0)
 ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_waves_generate_private_key, 0, 1, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, seed, IS_STRING, 0)
+ZEND_END_ARG_INFO()
 /* Procedural style API }}}*/
 /*{{{ WavesAddress ARGINFO */
 ZEND_BEGIN_ARG_INFO_EX(arginfo_waves_address__construct, 0, 0, 1)
@@ -89,6 +92,9 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_waves_private_key_sign, 0, 1, Wav
 	ZEND_ARG_TYPE_INFO(0, message, IS_STRING, 0)
 	ZEND_ARG_INFO(0, random)
 ZEND_END_ARG_INFO();
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_waves_private_key_from_seed, 0, 1, WavesPrivateKey, 0)
+	ZEND_ARG_TYPE_INFO(0, seed, IS_STRING, 0)
+ZEND_END_ARG_INFO();
 /* WavesPrivateKey ARGINFO }}}*/
 /* ARG_INFO }}} */
 
@@ -101,6 +107,7 @@ const zend_function_entry waves_functions[] = {
 	PHP_FE(waves_verify_message, arginfo_waves_verify_message)
 	PHP_FE(waves_public_key_to_address, arginfo_waves_public_key_to_address)
 	PHP_FE(waves_generate_public_key, arginfo_waves_private_key_arg)
+	PHP_FE(waves_generate_private_key, arginfo_waves_generate_private_key)
 	PHP_FE_END
 };
 /* }}} */
@@ -123,6 +130,7 @@ const zend_function_entry php_waves_signature_ce_functions[] = {/*{{{*/
 const zend_function_entry php_waves_private_key_ce_functions[] = {/*{{{*/
 	PHP_ME(WavesPrivateKey, __construct, arginfo_waves_private_key__construct, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
 	PHP_ME(WavesPrivateKey, sign, arginfo_waves_private_key_sign, ZEND_ACC_PUBLIC)
+	PHP_ME(WavesPrivateKey, fromSeed, arginfo_waves_private_key_from_seed, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
 	PHP_FE_END
 };/*}}}*/
 

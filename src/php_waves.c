@@ -994,6 +994,30 @@ PHP_FUNCTION(waves_generate_public_key)
 }
 /*}}}*/
 
+/* {{{ proto string waves_generate_private_key(string $seed) */
+PHP_FUNCTION(waves_generate_private_key)
+{
+	char *seed;
+	char *private_key;
+	size_t seed_len;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s",
+				&seed, &seed_len) == FAILURE) {
+		return;
+	}
+
+	private_key = emalloc(WAVES_PRIVATE_KEY_BYTES);
+	if (!private_key) {
+		zend_throw_exception_ex(php_waves_get_exception(), 0,
+				"Failed to allocate %ld bytes", WAVES_PRIVATE_KEY_BYTES);
+		return;
+	}
+
+	waves_gen_private_key((unsigned char *)private_key, (const unsigned char *)seed);
+	RETURN_STRINGL(private_key, WAVES_PRIVATE_KEY_BYTES);
+}
+/*}}}*/
+
 /* Procedural style API }}}*/
 
 /*

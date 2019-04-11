@@ -24,6 +24,7 @@ PHP_FUNCTION(waves_base58_decode);
 PHP_FUNCTION(waves_verify_message);
 PHP_FUNCTION(waves_public_key_to_address);
 PHP_FUNCTION(waves_generate_public_key);
+PHP_FUNCTION(waves_generate_private_key);
 
 PHP_METHOD(WavesAddress, __construct);
 PHP_METHOD(WavesAddress, fromSeed);
@@ -37,6 +38,7 @@ PHP_METHOD(WavesSignature, __construct);
 
 PHP_METHOD(WavesPrivateKey, __construct);
 PHP_METHOD(WavesPrivateKey, sign);
+PHP_METHOD(WavesPrivateKey, fromSeed);
 #endif /* PHP_WAVES_FE_H */
 /*
  * vim600: fdm=marker

@@ -38,7 +38,6 @@ PHP_METHOD(WavesPrivateKey, __construct)
 	memcpy(intern->key, key, key_len);
 }/*}}}*/
 
-
 /*{{{ proto WavesSignature WavesPrivateKey::sign(string $message, ?string $random = null)
  * Throws InvalidArgumentException
  * Throws WavesException */
@@ -95,6 +94,24 @@ PHP_METHOD(WavesPrivateKey, sign)
 			"Failed to sign message '%s'", message);
 }/*}}}*/
 
+/*{{{ proto static WavesPrivateKey WavesPrivateKey::fromSeed(string $seed) */
+PHP_METHOD(WavesPrivateKey, fromSeed)
+{
+	char *seed;
+	size_t seed_len;
+	php_waves_private_key_t *intern;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s",
+				&seed, &seed_len) == FAILURE) {
+		return;
+	}
+
+	object_init_ex(return_value, php_waves_private_key_ce);
+	intern = php_waves_private_key_object_fetch(Z_OBJ_P(return_value));
+	PHP_WAVES_ASSERT(intern);
+
+	waves_gen_private_key((unsigned char *)intern->key, (const unsigned char *)seed);
+}/*}}}*/
 /*
  * Local variables:
  * tab-width: 4
