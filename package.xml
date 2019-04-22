@@ -12,7 +12,7 @@
     <email>osmanov@php.net</email>
     <active>yes</active>
   </lead>
-  <date>2019-04-11</date>
+  <date>2019-04-22</date>
   <!-- Current version -->
   <version>
     <release>1.0.0</release>
@@ -34,14 +34,20 @@
       <file role="doc" name="INSTALL.md"/>
       <file role="doc" name="LICENSE"/>
       <dir name="src">
-        <file role="src" name="common.h"/>
         <file role="src" name="fe.c"/>
-        <file role="src" name="fe.h"/>
-        <file role="src" name="php_waves.c"/>
         <file role="src" name="php_waves.h"/>
+        <file role="src" name="properties.c"/>
+        <file role="src" name="fe.h"/>
         <file role="src" name="priv.c"/>
         <file role="src" name="priv.h"/>
-        <file role="src" name="properties.c"/>
+        <file role="src" name="common.h"/>
+        <file role="src" name="php_waves.c"/>
+        <dir name="classes">
+          <file role="src" name="WavesAddress.c"/>
+          <file role="src" name="WavesSignature.c"/>
+          <file role="src" name="WavesPublicKey.c"/>
+          <file role="src" name="WavesPrivateKey.c"/>
+        </dir>
       </dir>
       <dir name="tests">
         <file role="src" name="0010_waves_private_key_construct.phpt"/>

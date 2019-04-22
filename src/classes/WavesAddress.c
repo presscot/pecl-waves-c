@@ -13,8 +13,8 @@
    | license@php.net so we can mail you a copy immediately.               |
    +----------------------------------------------------------------------+
 */
-#include "php_waves.h"
-#include "priv.h"
+#include "../php_waves.h"
+#include "../priv.h"
 #include "zend_exceptions.h"
 #include "ext/spl/spl_exceptions.h"
 
