@@ -886,7 +886,7 @@ PHP_FUNCTION(waves_base58_decode)
 	char *in;
 	size_t in_len;
 	char *out;
-	size_t out_len;
+	ssize_t out_len;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s",
 				&in, &in_len) == FAILURE) {
@@ -907,6 +907,11 @@ PHP_FUNCTION(waves_base58_decode)
 	}
 
 	out_len = base58_decode((unsigned char *)out, in);
+	if (out_len <= 0) {
+		zend_throw_exception_ex(php_waves_get_exception(), 0, "Invalid input");
+		return;
+	}
+
 	PHP_WAVES_ASSERT(out_len);
 	RETVAL_STRINGL(out, out_len);
 }
