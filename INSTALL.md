@@ -1,4 +1,4 @@
-INSTALLATION OF EV PECL EXTENSION
+INSTALLATION OF WAVES-C PECL EXTENSION
 ==================================
 
 Currently GNU/Linux platforms supported only.
@@ -23,7 +23,7 @@ make
 
 Additionally, you may take advantage of the following flags:
 
---enable-waves-debug         Enable ev internal debugging
+--enable-waves-debug         Enable waves-c internal debugging
 
 Optionally test the extension:
 
