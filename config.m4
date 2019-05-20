@@ -72,8 +72,8 @@ if test "$PHP_WAVES" != "no"; then
   PHP_SETUP_OPENSSL(WAVES_SHARED_LIBADD)
   dnl }}}
 
-  WAVES_LIBS="-L$WAVES_LIBDIR/$PHP_LIBDIR/waves -L/usr/local/lib/waves"
   WAVES_LIBDIR="$WAVES_DIR/$PHP_LIBDIR/waves"
+  WAVES_LIBS="-L$WAVES_LIBDIR -L/usr/local/$PHP_LIBDIR/waves"
   LDFLAGS="$WAVES_LIBS $LDFLAGS"
   LIBS="$LIBS -lwaves_c"
 
