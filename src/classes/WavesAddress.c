@@ -43,31 +43,6 @@ PHP_METHOD(WavesAddress, __construct)
 	}
 }/*}}}*/
 
-/*{{{ proto static WavesAddress WavesAddress::fromSeed(string $seed, string $networkByte) */
-PHP_METHOD(WavesAddress, fromSeed)
-{
-	char *seed;
-	char *network_byte;
-	size_t seed_len;
-	size_t network_byte_len;
-	php_waves_address_t *intern;
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss",
-				&seed, &seed_len,
-				&network_byte, &network_byte_len) == FAILURE) {
-		return;
-	}
-
-	CHECK_NETWORK_BYTE_LEN(network_byte_len);
-
-	object_init_ex(return_value, php_waves_address_ce);
-	intern = php_waves_address_object_fetch(Z_OBJ_P(return_value));
-	PHP_WAVES_ASSERT(intern);
-
-	waves_seed_to_address((const unsigned char *)seed,
-			(unsigned char)network_byte[0], (unsigned char *)intern->address);
-}/*}}}*/
-
 /*
  * Local variables:
  * tab-width: 4

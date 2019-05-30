@@ -27,7 +27,6 @@ PHP_FUNCTION(waves_generate_public_key);
 PHP_FUNCTION(waves_generate_private_key);
 
 PHP_METHOD(WavesAddress, __construct);
-PHP_METHOD(WavesAddress, fromSeed);
 
 PHP_METHOD(WavesPublicKey, __construct);
 PHP_METHOD(WavesPublicKey, getAddress);

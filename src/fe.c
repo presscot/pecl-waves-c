@@ -59,10 +59,6 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(arginfo_waves_address__construct, 0, 0, 1)
 	ZEND_ARG_TYPE_INFO(0, address, IS_STRING, 0)
 ZEND_END_ARG_INFO();
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_waves_address_from_seed, 0, 2, WavesAddress, 0)
-	ZEND_ARG_TYPE_INFO(0, seed, IS_STRING, 0)
-	ZEND_ARG_TYPE_INFO(0, network_byte, IS_STRING, 0)
-ZEND_END_ARG_INFO();
 /* WavesAddress ARGINFO }}}*/
 /*{{{ WavesPublicKey ARGINFO */
 ZEND_BEGIN_ARG_INFO_EX(arginfo_waves_public_key__construct, 0, 0, 1)
@@ -113,7 +109,6 @@ const zend_function_entry waves_functions[] = {
 /* }}} */
 const zend_function_entry php_waves_address_ce_functions[] = {/*{{{*/
 	PHP_ME(WavesAddress, __construct, arginfo_waves_address__construct, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
-	PHP_ME(WavesAddress, fromSeed, arginfo_waves_address_from_seed, ZEND_ACC_PUBLIC| ZEND_ACC_STATIC)
 	PHP_FE_END
 };/*}}}*/
 const zend_function_entry php_waves_public_key_ce_functions[] = {/*{{{*/
