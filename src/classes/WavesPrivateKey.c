@@ -66,8 +66,8 @@ PHP_METHOD(WavesPrivateKey, sign)
 	if (random != NULL && random_len != 0) {
 		if (random_len != WAVES_RANDOM_SEED_BYTES) {
 			zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0,
-					"Random sequence expected to be %ld bytes in length, got %d bytes",
-					WAVES_RANDOM_SEED_BYTES, random_len);
+					"Random sequence expected to be %ld bytes in length, got %ld bytes",
+					(long)WAVES_RANDOM_SEED_BYTES, (long)random_len);
 			return;
 		}
 

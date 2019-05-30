@@ -29,54 +29,54 @@ extern const zend_function_entry php_waves_public_key_ce_functions[];
 extern const zend_function_entry php_waves_signature_ce_functions[];
 extern const zend_function_entry php_waves_private_key_ce_functions[];
 
-#define CHECK_NETWORK_BYTE_LEN(x) do {                                                   \
-	if ((x) != 1) {                                                                      \
-		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0,                      \
-				"Network byte length expected to be one byte long, got %ld bytes", (x)); \
-	}                                                                                    \
+#define CHECK_NETWORK_BYTE_LEN(x) do {                                                         \
+	if ((x) != 1) {                                                                            \
+		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0,                            \
+				"Network byte length expected to be one byte long, got %ld bytes", ((long)x)); \
+	}                                                                                          \
 } while (0)
 
 #define CHECK_ADDRESS_LEN(x) do {                                              \
 	if ((x) != WAVES_ADDRESS_BYTES) {                                          \
 		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0,            \
 				"Address length expected to be %ld bytes long, got %ld bytes", \
-				WAVES_ADDRESS_BYTES, (x));                                     \
+				(long)WAVES_ADDRESS_BYTES, ((long)x));                         \
 	}                                                                          \
 } while (0)
 
-#define CHECK_PRIVATE_KEY_LEN(x) do {                                    \
-	if ((x) != WAVES_PRIVATE_KEY_BYTES) {                                \
-		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0,      \
-				"Private key must be %ld bytes in length, got %d bytes", \
-				WAVES_PRIVATE_KEY_BYTES, (x));                           \
-		return;                                                          \
-	}                                                                    \
+#define CHECK_PRIVATE_KEY_LEN(x) do {                                     \
+	if ((x) != WAVES_PRIVATE_KEY_BYTES) {                                 \
+		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0,       \
+				"Private key must be %ld bytes in length, got %ld bytes", \
+				(long)WAVES_PRIVATE_KEY_BYTES, ((long)x));                \
+		return;                                                           \
+	}                                                                     \
 } while (0)
 
-#define CHECK_PUBLIC_KEY_LEN(x) do {                                    \
-	if ((x) != WAVES_PUBLIC_KEY_BYTES) {                                \
-		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0,     \
-				"Public key must be %ld bytes in length, got %d bytes", \
-				WAVES_PUBLIC_KEY_BYTES, (x));                           \
-		return;                                                         \
-	}                                                                   \
+#define CHECK_PUBLIC_KEY_LEN(x) do {                                     \
+	if ((x) != WAVES_PUBLIC_KEY_BYTES) {                                 \
+		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0,      \
+				"Public key must be %ld bytes in length, got %ld bytes", \
+				(long)WAVES_PUBLIC_KEY_BYTES, ((long)x));                \
+		return;                                                          \
+	}                                                                    \
 } while (0)
 
 #define CHECK_SIGNATURE_LEN(x) do {                                              \
 	if ((x) != WAVES_SIGNATURE_BYTES) {                                          \
 		zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0,              \
 				"Signature length expected to be %ld bytes long, got %ld bytes", \
-				WAVES_SIGNATURE_BYTES, (x));                                     \
+				(long)WAVES_SIGNATURE_BYTES, ((long)x));                         \
 	}                                                                            \
 } while (0)
 
-#define WAVES_EMALLOC(__res, __len) do {                      \
-	(__res) = emalloc((__len));                               \
-	if (!(__res)) {                                           \
-		zend_throw_exception_ex(php_waves_get_exception(), 0, \
-				"Failed to allocate %ld bytes", (__len));     \
-		return;                                               \
-	}                                                         \
+#define WAVES_EMALLOC(__res, __len) do {                        \
+	(__res) = emalloc((__len));                                 \
+	if (!(__res)) {                                             \
+		zend_throw_exception_ex(php_waves_get_exception(), 0,   \
+				"Failed to allocate %ld bytes", ((long)__len)); \
+		return;                                                 \
+	}                                                           \
 } while (0)
 
 #define PHP_WAVES_OBJECT_TAIL \

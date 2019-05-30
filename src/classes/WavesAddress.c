@@ -38,6 +38,9 @@ PHP_METHOD(WavesAddress, __construct)
 	intern = php_waves_address_object_fetch(Z_OBJ_P(getThis()));
 	PHP_WAVES_ASSERT(intern);
 	memcpy(intern->address, address, address_len);
+	if (address_len < WAVES_ADDRESS_BYTES) {
+		memset(intern->address + address_len, 0, WAVES_ADDRESS_BYTES - address_len);
+	}
 }/*}}}*/
 
 /*{{{ proto static WavesAddress WavesAddress::fromSeed(string $seed, string $networkByte) */

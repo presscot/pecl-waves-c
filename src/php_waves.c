@@ -174,7 +174,7 @@ static zval *read_property(zval *object, zval *member, int type, void **cache_sl
 			retval = &EG(uninitialized_zval);
 		}
 	} else {
-		zend_object_handlers *std_hnd = zend_get_std_object_handlers();
+		const zend_object_handlers *std_hnd = zend_get_std_object_handlers();
 		retval = std_hnd->read_property(object, member, type, cache_slot, rv);
 	}
 
@@ -203,7 +203,7 @@ static void write_property(zval *object, zval *member, zval *value, void **cache
 	if (hnd) {
 		hnd->write_func(obj, value);
 	} else {
-		zend_object_handlers *std_hnd = zend_get_std_object_handlers();
+		const zend_object_handlers *std_hnd = zend_get_std_object_handlers();
 	    std_hnd->write_property(object, member, value, cache_slot);
 	}
 
@@ -255,7 +255,7 @@ static int object_has_property(zval *object, zval *member, int has_set_exists, v
 				   php_error_docref(NULL, E_WARNING, "Invalid value for has_set_exists");
 		}
 	} else {
-		zend_object_handlers *std_hnd = zend_get_std_object_handlers();
+		const zend_object_handlers *std_hnd = zend_get_std_object_handlers();
 		ret = std_hnd->has_property(object, member, has_set_exists, cache_slot);
 	}
 
@@ -304,7 +304,7 @@ static zval *get_property_ptr_ptr(zval *object, zval *member, int type, void **c
 	if (hnd && hnd->get_ptr_ptr_func != NULL) {
 		retval = hnd->get_ptr_ptr_func(obj);
 	} else {
-		zend_object_handlers *std_hnd = zend_get_std_object_handlers();
+		const zend_object_handlers *std_hnd = zend_get_std_object_handlers();
 		retval = std_hnd->get_property_ptr_ptr(object, member, type, cache_slot);
 	}
 
@@ -823,8 +823,8 @@ PHP_FUNCTION(waves_sign_message)
 	if (random != NULL && random_len != 0) {
 		if (random_len != WAVES_RANDOM_SEED_BYTES) {
 			zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0,
-					"Random sequence expected to be %ld bytes in length, got %d bytes",
-					WAVES_RANDOM_SEED_BYTES, random_len);
+					"Random sequence expected to be %ld bytes in length, got %ld bytes",
+					(long)WAVES_RANDOM_SEED_BYTES, (long)random_len);
 			return;
 		}
 
@@ -870,7 +870,7 @@ PHP_FUNCTION(waves_base58_encode)
 	if (!out) {
 		zend_throw_exception_ex(php_waves_get_exception(), 0,
 				"Failed to allocate %ld bytes",
-				sizeof(char) * out_len);
+				(long)(sizeof(char) * out_len));
 		return;
 	}
 
@@ -902,7 +902,7 @@ PHP_FUNCTION(waves_base58_decode)
 	if (!out) {
 		zend_throw_exception_ex(php_waves_get_exception(), 0,
 				"Failed to allocate %ld bytes",
-				sizeof(char) * out_len);
+				(long)(sizeof(char) * out_len));
 		return;
 	}
 
@@ -989,7 +989,7 @@ PHP_FUNCTION(waves_generate_public_key)
 	public_key = emalloc(WAVES_PUBLIC_KEY_BYTES);
 	if (!public_key) {
 		zend_throw_exception_ex(php_waves_get_exception(), 0,
-				"Failed to allocate %ld bytes", WAVES_PUBLIC_KEY_BYTES);
+				"Failed to allocate %ld bytes", (long)WAVES_PUBLIC_KEY_BYTES);
 		return;
 	}
 
@@ -1014,7 +1014,7 @@ PHP_FUNCTION(waves_generate_private_key)
 	private_key = emalloc(WAVES_PRIVATE_KEY_BYTES);
 	if (!private_key) {
 		zend_throw_exception_ex(php_waves_get_exception(), 0,
-				"Failed to allocate %ld bytes", WAVES_PRIVATE_KEY_BYTES);
+				"Failed to allocate %ld bytes", (long)WAVES_PRIVATE_KEY_BYTES);
 		return;
 	}
 

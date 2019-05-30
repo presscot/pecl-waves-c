@@ -19,7 +19,7 @@
 
 #include "common.h"
 
-#define PHP_WAVES_VERSION "1.0.1"
+#define PHP_WAVES_VERSION "1.0.2"
 
 extern zend_module_entry waves_module_entry;
 #define phpext_waves_ptr &waves_module_entry
