@@ -37,7 +37,7 @@
 		php_waves_add_property((a), (b)[i].name, (b)[i].name_length,         \
 				(php_waves_prop_read_t)(b)[i].read_func,                     \
 				(php_waves_prop_write_t)(b)[i].write_func,                   \
-				(php_waves_prop_get_ptr_ptr_t)(b)[i].get_ptr_ptr_func); \
+				(php_waves_prop_get_ptr_ptr_t)(b)[i].get_ptr_ptr_func);      \
 		i++;                                                                 \
 	}                                                                        \
 }
@@ -61,6 +61,8 @@ zend_class_entry *php_waves_public_key_ce;
 zend_class_entry *php_waves_signature_ce;
 /* WavesPrivateKey */
 zend_class_entry *php_waves_private_key_ce;
+/* WavesDataTransaction */
+zend_class_entry *php_waves_data_tx_ce;
 
 /* All PHP classes registered by this extension */
 static HashTable classes;
@@ -73,6 +75,8 @@ static HashTable waves_public_key_properties;
 static HashTable waves_signature_properties;
 /* Properties of WavesPrivateKey class */
 static HashTable waves_private_key_properties;
+/* Properties of WavesDataTransaction class */
+static HashTable waves_data_tx_properties;
 
 /* WavesAddress class object handlers */
 static zend_object_handlers waves_address_object_handlers;
@@ -82,6 +86,8 @@ static zend_object_handlers waves_public_key_object_handlers;
 static zend_object_handlers waves_signature_object_handlers;
 /* WavesPrivateKey class object handlers */
 static zend_object_handlers waves_private_key_object_handlers;
+/* WavesDataTransaction class object handlers */
+static zend_object_handlers waves_data_tx_object_handlers;
 
 static zend_always_inline HashTable *find_prop_handler(HashTable *classes, zend_class_entry *ce)/*{{{*/
 {
@@ -129,6 +135,16 @@ static zend_object *waves_signature_object_create(zend_class_entry *ce)
 	php_waves_signature_t *intern;
 	PHP_WAVES_OBJ_ALLOC(intern, ce, php_waves_signature_t);
 	intern->zo.handlers = &waves_signature_object_handlers;
+	return &intern->zo;
+}/*}}}*/
+
+/*{{{ waves_data_tx_object_create
+ * Allocates new WavesDataTransaction class object, its properties and handlers. */
+static zend_object *waves_data_tx_object_create(zend_class_entry *ce)
+{
+	php_waves_data_tx_t *intern;
+	PHP_WAVES_OBJ_ALLOC(intern, ce, php_waves_data_tx_t);
+	intern->zo.handlers = &waves_data_tx_object_handlers;
 	return &intern->zo;
 }/*}}}*/
 
@@ -604,6 +620,60 @@ static HashTable *php_waves_private_key_get_properties(zval *object)/*{{{*/
 }/*}}}*/
 
 /* WavesPrivateKey class object handlers }}}*/
+/*{{{ WavesDataTransaction class object handlers */
+
+static zval *php_waves_data_tx_read_property(zval *object, zval *member, int type, void **cache_slot, zval *rv) {/*{{{*/
+	php_waves_data_tx_t *intern = php_waves_data_tx_object_fetch(Z_OBJ_P(object));
+	return (intern ? read_property(object, member, type, cache_slot, rv, (void *)intern, intern->prop_handler) : NULL);
+}/*}}}*/
+
+static void php_waves_data_tx_write_property(zval *object, zval *member, zval *value, void **cache_slot)/*{{{*/
+{
+	php_waves_data_tx_t *intern = php_waves_data_tx_object_fetch(Z_OBJ_P(object));
+	if (EXPECTED(intern)) {
+		write_property(object, member, value, cache_slot, (void *)intern, intern->prop_handler);
+	}
+}/*}}}*/
+
+static int php_waves_data_tx_has_property(zval *object, zval *member, int has_set_exists, void **cache_slot)/*{{{*/
+{
+	php_waves_data_tx_t *intern = php_waves_data_tx_object_fetch(Z_OBJ_P(object));
+	return (intern ? object_has_property(object, member, has_set_exists, cache_slot, (void *)intern, intern->prop_handler) : 0);
+}/*}}}*/
+
+static HashTable * php_waves_data_tx_get_debug_info(zval *object, int *is_temp)/*{{{*/
+{
+	HashTable *retval;
+	php_waves_data_tx_t *intern = php_waves_data_tx_object_fetch(Z_OBJ_P(object));
+	if (EXPECTED(intern) && intern->prop_handler) {
+		retval = object_get_debug_info(object, is_temp, (void *)intern, intern->prop_handler);
+	} else {
+		ALLOC_HASHTABLE(retval);
+		ZEND_INIT_SYMTABLE_EX(retval, 1, 0);
+	}
+	*is_temp = 1;
+	return retval;
+}/*}}}*/
+
+static zval *php_waves_data_tx_get_property_ptr_ptr(zval *object, zval *member, int type, void **cache_slot)/*{{{*/
+{
+	php_waves_data_tx_t *intern = php_waves_data_tx_object_fetch(Z_OBJ_P(object));
+	return (EXPECTED(intern) ? get_property_ptr_ptr(object, member, type, cache_slot, (void *)intern, intern->prop_handler) : NULL);
+}/*}}}*/
+
+static HashTable *php_waves_data_tx_get_properties(zval *object)/*{{{*/
+{
+	HashTable *retval;
+	php_waves_data_tx_t *intern = php_waves_data_tx_object_fetch(Z_OBJ_P(object));
+	if (EXPECTED(intern)) {
+		retval = get_properties(object, (void *)intern, intern->prop_handler);
+	} else {
+		ALLOC_HASHTABLE(retval);
+	}
+	return retval;
+}/*}}}*/
+
+/* WavesDataTransaction class object handlers }}}*/
 
 static zend_always_inline void register_classes()/*{{{*/
 {
@@ -643,6 +713,13 @@ static zend_always_inline void register_classes()/*{{{*/
 	PHP_WAVES_ADD_CLASS_PROPERTIES(&waves_private_key_properties, waves_private_key_property_entries);
 	zend_declare_property_null(ce, "key", sizeof("key") - 1, ZEND_ACC_PUBLIC);
 	zend_hash_add_ptr(&classes, ce->name, &waves_private_key_properties);
+
+	PHP_WAVES_REGISTER_CLASS("WavesDataTransaction", waves_data_tx_object_create, php_waves_data_tx_ce, php_waves_data_tx_ce_functions);
+	ce = php_waves_data_tx_ce;
+	zend_hash_init(&waves_data_tx_properties, 1, NULL, free_prop_handler, 1);
+	PHP_WAVES_ADD_CLASS_PROPERTIES(&waves_data_tx_properties, waves_data_tx_property_entries);
+	zend_declare_property_null(ce, "fee", sizeof("fee") - 1, ZEND_ACC_PUBLIC);
+	zend_hash_add_ptr(&classes, ce->name, &waves_data_tx_properties);
 }
 /*}}}*/
 
@@ -720,6 +797,18 @@ PHP_MINIT_FUNCTION(waves)
 	waves_private_key_object_handlers.has_property = php_waves_private_key_has_property;
 	waves_private_key_object_handlers.get_debug_info = php_waves_private_key_get_debug_info;
 	waves_private_key_object_handlers.get_properties = php_waves_private_key_get_properties;
+
+	memcpy(&waves_data_tx_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
+	waves_data_tx_object_handlers.offset = XtOffsetOf(php_waves_data_tx_t, zo);
+	waves_data_tx_object_handlers.get_gc = get_gc;
+	waves_data_tx_object_handlers.clone_obj = NULL;
+	/*waves_data_tx_object_handlers.free_obj = php_waves_data_tx_free_obj;*/
+	waves_data_tx_object_handlers.read_property = php_waves_data_tx_read_property;
+	waves_data_tx_object_handlers.write_property = php_waves_data_tx_write_property;
+	waves_data_tx_object_handlers.get_property_ptr_ptr = php_waves_data_tx_get_property_ptr_ptr;
+	waves_data_tx_object_handlers.has_property = php_waves_data_tx_has_property;
+	waves_data_tx_object_handlers.get_debug_info = php_waves_data_tx_get_debug_info;
+	waves_data_tx_object_handlers.get_properties = php_waves_data_tx_get_properties;
 
 	register_classes();
 

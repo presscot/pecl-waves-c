@@ -92,6 +92,10 @@ ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_waves_private_key_from_seed, 0, 1
 	ZEND_ARG_TYPE_INFO(0, seed, IS_STRING, 0)
 ZEND_END_ARG_INFO();
 /* WavesPrivateKey ARGINFO }}}*/
+/*{{{ WavesDataTransaction ARGINFO */
+ZEND_BEGIN_ARG_INFO_EX(arginfo_waves_data_tx__construct, 0, 0, 0)
+ZEND_END_ARG_INFO();
+/* WavesDataTransaction ARGINFO }}}*/
 /* ARG_INFO }}} */
 
 /* {{{ waves_functions[] */
@@ -126,6 +130,10 @@ const zend_function_entry php_waves_private_key_ce_functions[] = {/*{{{*/
 	PHP_ME(WavesPrivateKey, __construct, arginfo_waves_private_key__construct, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
 	PHP_ME(WavesPrivateKey, sign, arginfo_waves_private_key_sign, ZEND_ACC_PUBLIC)
 	PHP_ME(WavesPrivateKey, fromSeed, arginfo_waves_private_key_from_seed, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
+	PHP_FE_END
+};/*}}}*/
+const zend_function_entry php_waves_data_tx_ce_functions[] = {/*{{{*/
+	PHP_ME(WavesPrivateKey, __construct, arginfo_waves_data_tx__construct, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
 	PHP_FE_END
 };/*}}}*/
 

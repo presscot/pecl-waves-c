@@ -22,12 +22,14 @@ extern zend_class_entry *php_waves_address_ce;
 extern zend_class_entry *php_waves_public_key_ce;
 extern zend_class_entry *php_waves_signature_ce;
 extern zend_class_entry *php_waves_private_key_ce;
+extern zend_class_entry *php_waves_data_tx_ce;
 
 extern const zend_function_entry waves_functions[];
 extern const zend_function_entry php_waves_address_ce_functions[];
 extern const zend_function_entry php_waves_public_key_ce_functions[];
 extern const zend_function_entry php_waves_signature_ce_functions[];
 extern const zend_function_entry php_waves_private_key_ce_functions[];
+extern const zend_function_entry php_waves_data_tx_ce_functions[];
 
 #define CHECK_NETWORK_BYTE_LEN(x) do {                                                         \
 	if ((x) != 1) {                                                                            \
@@ -120,6 +122,12 @@ typedef struct _php_waves_private_key_t {
 	char key[WAVES_PRIVATE_KEY_BYTES];
 	PHP_WAVES_OBJECT_TAIL;
 } php_waves_private_key_t;
+
+/* WavesDataTransaction class internal data */
+typedef struct _php_waves_data_tx_t {
+	PHP_WAVES_OBJECT_TAIL;
+	zend_long fee;
+} php_waves_data_tx_t;
 /* Class internal data }}}*/
 
 /*{{{ Object helpers */
@@ -150,6 +158,13 @@ static zend_always_inline php_waves_signature_t *php_waves_signature_object_fetc
 static zend_always_inline php_waves_private_key_t *php_waves_private_key_object_fetch(zend_object *obj)
 {
 	return (EXPECTED(obj) ? (php_waves_private_key_t *)((char *)obj - XtOffsetOf(php_waves_private_key_t, zo)) : NULL);
+}/*}}}*/
+
+/*{{{ php_waves_data_tx_object_fetch
+ * Returns internal structure of a WavesDataTransaction class object. */
+static zend_always_inline php_waves_data_tx_t *php_waves_data_tx_object_fetch(zend_object *obj)
+{
+	return (EXPECTED(obj) ? (php_waves_data_tx_t *)((char *)obj - XtOffsetOf(php_waves_data_tx_t, zo)) : NULL);
 }/*}}}*/
 
 /* Object helpers }}}*/
@@ -184,6 +199,7 @@ extern const php_waves_property_entry_t waves_address_property_entries[];
 extern const php_waves_property_entry_t waves_public_key_property_entries[];
 extern const php_waves_property_entry_t waves_signature_property_entries[];
 extern const php_waves_property_entry_t waves_private_key_property_entries[];
+extern const php_waves_property_entry_t waves_data_tx_property_entries[];
 
 /*Properties }}}*/
 

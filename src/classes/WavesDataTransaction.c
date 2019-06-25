@@ -13,35 +13,34 @@
    | license@php.net so we can mail you a copy immediately.               |
    +----------------------------------------------------------------------+
 */
-#ifndef PHP_WAVES_FE_H
-#define PHP_WAVES_FE_H
-#include "php.h"
+#include "../php_waves.h"
+#include "../priv.h"
 
-PHP_FUNCTION(waves_secure_hash);
-PHP_FUNCTION(waves_sign_message);
-PHP_FUNCTION(waves_base58_encode);
-PHP_FUNCTION(waves_base58_decode);
-PHP_FUNCTION(waves_verify_message);
-PHP_FUNCTION(waves_public_key_to_address);
-PHP_FUNCTION(waves_generate_public_key);
-PHP_FUNCTION(waves_generate_private_key);
+/*{{{ proto WavesDataTransaction::__construct(string $key) */
+PHP_METHOD(WavesDataTransaction, __construct)
+{
+	char *key;
+	size_t key_len;
+#if 0
+	php_waves_data_tx_t *intern;
+#endif
 
-PHP_METHOD(WavesAddress, __construct);
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s",
+				&key, &key_len) == FAILURE) {
+		return;
+	}
 
-PHP_METHOD(WavesPublicKey, __construct);
-PHP_METHOD(WavesPublicKey, getAddress);
-PHP_METHOD(WavesPublicKey, verify);
-PHP_METHOD(WavesPublicKey, fromPrivateKey);
+#if 0
+	intern = php_waves_data_tx_object_fetch(Z_OBJ_P(getThis()));
+	PHP_WAVES_ASSERT(intern);
+#endif
+}/*}}}*/
 
-PHP_METHOD(WavesSignature, __construct);
-
-PHP_METHOD(WavesPrivateKey, __construct);
-PHP_METHOD(WavesPrivateKey, sign);
-PHP_METHOD(WavesPrivateKey, fromSeed);
-
-PHP_METHOD(WavesDataTransaction, __construct);
-#endif /* PHP_WAVES_FE_H */
 /*
- * vim600: fdm=marker
- * vim: noet sts=4 sw=4 ts=4
+ * Local variables:
+ * tab-width: 4
+ * c-basic-offset: 4
+ * End:
+ * vim600: noet sw=4 ts=4 sts=4 fdm=marker
+ * vim<600: noet sw=4 ts=4 sts=4
  */

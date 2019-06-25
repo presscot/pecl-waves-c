@@ -82,6 +82,20 @@ const php_waves_property_entry_t waves_private_key_property_entries[]  = {/*{{{*
 };/*}}}*/
 /* WavesPrivateKey properties }}}*/
 
+/*{{{ WavesDataTransaction properties */
+static zval *waves_data_tx_fee_prop_read(void *obj, zval *retval)/*{{{*/
+{
+	php_waves_data_tx_t *a = (php_waves_data_tx_t *)obj;
+	ZVAL_LONG(retval, a->fee);
+	return retval;
+}/*}}}*/
+
+const php_waves_property_entry_t waves_data_tx_property_entries[]  = {/*{{{*/
+	{"fee", sizeof("fee") - 1, waves_data_tx_fee_prop_read, NULL, NULL},
+	{NULL, 0, NULL, NULL, NULL}
+};/*}}}*/
+/* WavesDataTransaction properties }}}*/
+
 /*
  * vim600: fdm=marker
  * vim: noet sts=4 sw=4 ts=4

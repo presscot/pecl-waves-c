@@ -124,6 +124,7 @@ if test "$PHP_WAVES" != "no"; then
     src/classes/WavesPublicKey.c \
     src/classes/WavesSignature.c \
     src/classes/WavesPrivateKey.c \
+    src/classes/WavesDataTransaction.c \
     src/php_waves.c \
     "
   PHP_NEW_EXTENSION(waves, $WAVES_SOURCES, $ext_shared,, $PHP_WAVES_CFLAGS)
