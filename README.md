@@ -2,7 +2,7 @@ Waves PECL extension
 
 # DESCRIPTION
 
-Waves is a PECL extension providing interface to the [`libwaves_c`](https://github.com/qbcir/waves-c) library.
+Waves is a PECL extension providing interface to the [`libwaves_c`](https://github.com/wavesplatform/waves-c) library.
 
 # INSTALLATION
 
