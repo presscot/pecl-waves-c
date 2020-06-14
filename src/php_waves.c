@@ -776,6 +776,28 @@ PHP_MINFO_FUNCTION(waves)
 
 /*{{{ Procedural style API */
 
+/* {{{ proto string keccak256(string data) */
+PHP_FUNCTION(keccak256)
+{
+	char *data;
+	size_t data_len;
+	uint8_t hash[32];
+	sha3_context c;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s",
+				&data, &data_len) == FAILURE) {
+		return;
+	}
+
+    sha3_Init256(&c);
+    sha3_Update(&c, hash, data_len);
+    sha3_Finalize(&c);
+
+	memcpy(hash, c.sb, 32);
+
+	RETURN_STRINGL((const char *)hash, sizeof(hash));
+}
+
 /* {{{ proto string waves_secure_hash(string message) */
 PHP_FUNCTION(waves_secure_hash)
 {

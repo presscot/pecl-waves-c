@@ -17,6 +17,7 @@
 #define PHP_WAVES_FE_H
 #include "php.h"
 
+PHP_FUNCTION(keccak256);
 PHP_FUNCTION(waves_secure_hash);
 PHP_FUNCTION(waves_sign_message);
 PHP_FUNCTION(waves_base58_encode);
