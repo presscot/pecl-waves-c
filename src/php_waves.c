@@ -18,6 +18,8 @@
 #include "ext/spl/spl_exceptions.h"
 #include "priv.h"
 
+#include <php/ext/hash/php_hash.h>
+
 /* Registers a PHP class */
 #define PHP_WAVES_REGISTER_CLASS(name, create_func, ce, ce_functions) \
 {                                                                     \
@@ -781,7 +783,8 @@ PHP_FUNCTION(keccak256)
 {
 	char *data;
 	size_t data_len;
-	uint8_t hash[32];
+	//uint8_t hash[32];
+	char hash[64];
 	sha3_context c;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s",
@@ -793,7 +796,9 @@ PHP_FUNCTION(keccak256)
     sha3_Update(&c, data, data_len);
     sha3_Finalize(&c);
 
-	memcpy(hash, c.sb, 32);
+    php_hash_bin2hex(hash, c.sb, 32);
+
+	//memcpy(hash, c.sb, 32);
 
 	RETURN_STRINGL((const char *)hash, sizeof(hash));
 }
