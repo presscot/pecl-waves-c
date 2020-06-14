@@ -32,6 +32,7 @@
 
 #include <waves/b58.h>
 #include <waves/crypto.h>
+#include <waves/sha3.h>
 
 #ifdef ZTS
 # include <TSRM.h>
