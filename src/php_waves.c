@@ -790,7 +790,7 @@ PHP_FUNCTION(keccak256)
 	}
 
     sha3_Init256(&c);
-    sha3_Update(&c, hash, data_len);
+    sha3_Update(&c, data, data_len);
     sha3_Finalize(&c);
 
 	memcpy(hash, c.sb, 32);
