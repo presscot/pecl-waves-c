@@ -821,14 +821,6 @@ PHP_FUNCTION(secp256k1_sign)
 		return;
 	}
 
-    ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
-
-    if (!secp256k1_ecdsa_sign(ctx, &sig, message, private_key, NULL, NULL)){
-        hash[0] = '0';
-    }else{
-        hash[0] = '1';
-    }
-
 	RETURN_STRINGL((const char *)message, sizeof(hash));
 }
 
