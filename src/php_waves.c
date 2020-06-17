@@ -813,8 +813,7 @@ PHP_FUNCTION(secp256k1_sign)
     secp256k1_context* ctx;
     secp256k1_ecdsa_signature sig;
     void *sign_prealloc = NULL;
-
-    char hash[64];
+    unsigned char output64[64];
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss",
 				&message, &message_len,
@@ -825,7 +824,13 @@ PHP_FUNCTION(secp256k1_sign)
     ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN);
     secp256k1_ecdsa_sign(ctx, &sig, message, private_key, NULL, NULL);
 
-	RETURN_STRINGL((const char *)sig.data, sizeof(sig.data));
+secp256k1_ecdsa_signature_serialize_compact(ctx, output64, &sig);
+
+
+secp256k1_context_destroy(sign);
+secp256k1_context_destroy(NULL);
+
+	RETURN_STRINGL((const char *)output64, sizeof(output64));
 }
 
 /* {{{ proto string waves_secure_hash(string message) */
