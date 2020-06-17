@@ -821,13 +821,11 @@ PHP_FUNCTION(secp256k1_sign)
 				&private_key, &private_key_len) == FAILURE) {
 		return;
 	}
-//secp256k1_context_preallocated_size(SECP256K1_CONTEXT_SIGN);
-  //  sign_prealloc = emalloc(secp256k1_context_preallocated_size(SECP256K1_CONTEXT_SIGN));
 
     ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN);
-    //ctx = secp256k1_context_preallocated_create(sign_prealloc, SECP256K1_CONTEXT_SIGN);
-    //efree(sign_prealloc);
-	RETURN_STRINGL((const char *)message, sizeof(hash));
+    secp256k1_ecdsa_sign(ctx, &sig, message, private_key, NULL, NULL);
+
+	RETURN_STRINGL((const char *)sig, sizeof(sig));
 }
 
 /* {{{ proto string waves_secure_hash(string message) */
