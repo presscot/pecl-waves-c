@@ -825,7 +825,7 @@ PHP_FUNCTION(secp256k1_sign)
     sign_prealloc = emalloc(secp256k1_context_preallocated_size(SECP256K1_CONTEXT_SIGN));
 
     //ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN);
-    ctx = secp256k1_context_preallocated_create(sign_prealloc, SECP256K1_CONTEXT_SIGN);
+    //ctx = secp256k1_context_preallocated_create(sign_prealloc, SECP256K1_CONTEXT_SIGN);
     efree(sign_prealloc);
 	RETURN_STRINGL((const char *)message, sizeof(hash));
 }
