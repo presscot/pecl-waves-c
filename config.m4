@@ -14,6 +14,8 @@ dnl +----------------------------------------------------------------------+
 
 PHP_ARG_WITH(waves, for Waves support,
 [  --with-waves           Include waves support])
+PHP_ARG_WITH(secp256k1, for secp256k1 support,
+[  --with-secp256k1           Include secp256k1 support])
 PHP_ARG_ENABLE(waves-debug, for Waves debug support,
 [  --enable-waves-debug   Enable Waves debug support], no, no)
 
