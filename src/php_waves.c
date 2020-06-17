@@ -825,7 +825,7 @@ PHP_FUNCTION(secp256k1_sign)
     ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN);
     secp256k1_ecdsa_sign(ctx, &sig, message, private_key, NULL, NULL);
 
-	RETURN_STRINGL((const char *)sig, sizeof(sig));
+	RETURN_STRINGL((const char *)sig.data, sizeof(sig.data));
 }
 
 /* {{{ proto string waves_secure_hash(string message) */
