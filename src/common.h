@@ -34,6 +34,7 @@
 #include <waves/crypto.h>
 #include <waves/sha3.h>
 #include <secp256k1.h>
+#include <secp256k1_preallocated.h>
 
 #ifdef ZTS
 # include <TSRM.h>
