@@ -92,6 +92,18 @@ if test "$PHP_WAVES" != "no"; then
   ])
   dnl }}}
 
+  dnl {{{ secp256k1
+  AC_SEARCH_LIBS(secp256k1_ecdsa_sign, [secp256k1], [
+    PHP_ADD_LIBRARY_WITH_PATH(secp256k1, /usr/local/lib, WAVES_SHARED_LIBADD)
+    LDFLAGS="$LDFLAGS -lsecp256k1"
+    AC_DEFINE(HAVE_WAVES_C_LIB, 1, [Whether libwaves_c library is installed])
+  ], [
+    AC_MSG_ERROR([base58_decode not found in libwaves_c library, or the library is not installed.])
+  ], [
+    AC_MSG_ERROR([123])
+  ])
+  dnl }}}
+
   dnl {{{ --enable-waves-debug
   if test "$PHP_WAVES_DEBUG" != "no"; then
     PHP_WAVES_CFLAGS="$PHP_WAVES_CFLAGS -Wall -g -ggdb -O0"
