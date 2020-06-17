@@ -821,9 +821,8 @@ PHP_FUNCTION(secp256k1_sign)
 		return;
 	}
 
-    ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
-
-    secp256k1_ecdsa_sign(ctx, &sig, message, private_key, NULL, NULL);
+    ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN);
+    //sign = secp256k1_context_preallocated_create(sign_prealloc, SECP256K1_CONTEXT_SIGN);
 
 	RETURN_STRINGL((const char *)message, sizeof(hash));
 }
