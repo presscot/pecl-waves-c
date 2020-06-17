@@ -827,8 +827,8 @@ PHP_FUNCTION(secp256k1_sign)
 secp256k1_ecdsa_signature_serialize_compact(ctx, output64, &sig);
 
 
-secp256k1_context_destroy(sign);
-secp256k1_context_destroy(NULL);
+//secp256k1_context_destroy(sign);
+//secp256k1_context_destroy(NULL);
 
 	RETURN_STRINGL((const char *)output64, sizeof(output64));
 }
