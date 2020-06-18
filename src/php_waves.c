@@ -823,6 +823,8 @@ char hash[128];
 		return;
 	}
 
+    ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN);
+    secp256k1_ecdsa_sign_recoverable(ctx, &sig, message, private_key, NULL, NULL);
 
 
 	RETURN_STRINGL((const char *)output64, sizeof(output64));
