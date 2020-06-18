@@ -828,7 +828,7 @@ char hash[128];
 
     secp256k1_ecdsa_recoverable_signature_serialize_compact(ctx, output64, &recid, &sig);
 
-secp256k1_context_destroy(sig);
+secp256k1_context_destroy(ctx);
 secp256k1_context_destroy(NULL);
 
 	RETURN_STRINGL((const char *)output64, sizeof(output64));
@@ -862,7 +862,7 @@ char hash[128];
 secp256k1_ecdsa_signature_serialize_compact(ctx, output64, &sig);
 
 //php_hash_bin2hex(hash, output64, 64);
-secp256k1_context_destroy(sig);
+secp256k1_context_destroy(ctx);
 secp256k1_context_destroy(NULL);
 
 	RETURN_STRINGL((const char *)output64, sizeof(output64));
