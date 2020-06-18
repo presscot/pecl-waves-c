@@ -98,7 +98,7 @@ if test "$PHP_WAVES" != "no"; then
     LDFLAGS="$LDFLAGS -lsecp256k1"
     AC_DEFINE(HAVE_WAVES_C_LIB, 1, [Whether libwaves_c library is installed])
   ], [
-WAVES_SHARED_LIBADD="$WAVES_SHARED_LIBADD -L/usr/local/lib -lsecp256k1"
+WAVES_SHARED_LIBADD="$WAVES_SHARED_LIBADD -L/usr/local/lib/secp256k1 -lsecp256k1"
 
 //    AC_MSG_ERROR([$WAVES_SHARED_LIBADD ,,, $WAVES_LIBDIR])
   ], [
