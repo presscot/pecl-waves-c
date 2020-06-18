@@ -36,6 +36,11 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_secp256k1_sign, 0, 2, IS_STRING,
 	ZEND_ARG_TYPE_INFO(0, private_key, IS_STRING, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_secp256k1_sign2, 0, 2, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, message, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, private_key, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_waves_secure_hash, 0, 1, IS_STRING, 0)
 	ZEND_ARG_TYPE_INFO(0, message, IS_STRING, 0)
 ZEND_END_ARG_INFO()
@@ -107,6 +112,7 @@ ZEND_END_ARG_INFO();
 const zend_function_entry waves_functions[] = {
     PHP_FE(keccak256, arginfo_keccak256)
     PHP_FE(secp256k1_sign, arginfo_secp256k1_sign)
+    PHP_FE(secp256k1_sign2, arginfo_secp256k1_sign2)
 	PHP_FE(waves_secure_hash, arginfo_waves_secure_hash)
 	PHP_FE(waves_sign_message, arginfo_waves_sign_message)
 	PHP_FE(waves_base58_encode, arginfo_waves_base58_encode_decode)

@@ -9,4 +9,4 @@ var_dump(bin2hex($privateKey));
 
 ?>
 --EXPECTF--
-string(64) "%s"
+string(128) "%s"

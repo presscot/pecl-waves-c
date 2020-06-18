@@ -811,9 +811,42 @@ PHP_FUNCTION(secp256k1_sign)
 	char *private_key;
 	size_t private_key_len;
     secp256k1_context* ctx;
+    secp256k1_ecdsa_recoverable_signature sig;
+    int recid;
+
+    unsigned char output64[64];
+char hash[128];
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss",
+				&message, &message_len,
+				&private_key, &private_key_len) == FAILURE) {
+		return;
+	}
+
+    ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN);
+    secp256k1_ecdsa_sign_recoverable(ctx, &sig, message, private_key, NULL, NULL);
+
+    secp256k1_ecdsa_recoverable_signature_serialize_compact(ctx, output64, &recid, &sig);
+
+secp256k1_context_destroy(sign);
+secp256k1_context_destroy(NULL);
+
+	RETURN_STRINGL((const char *)output64, sizeof(output64));
+}
+
+
+/* {{{ proto string secp256k1_sign2(string message, string private_key) */
+PHP_FUNCTION(secp256k1_sign2)
+{
+	char *message;
+	size_t message_len;
+	char *private_key;
+	size_t private_key_len;
+    secp256k1_context* ctx;
     secp256k1_ecdsa_signature sig;
     void *sign_prealloc = NULL;
     unsigned char output64[64];
+char hash[128];
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss",
 				&message, &message_len,
@@ -824,11 +857,13 @@ PHP_FUNCTION(secp256k1_sign)
     ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN);
     secp256k1_ecdsa_sign(ctx, &sig, message, private_key, NULL, NULL);
 
+
+
 secp256k1_ecdsa_signature_serialize_compact(ctx, output64, &sig);
 
-
-//secp256k1_context_destroy(sign);
-//secp256k1_context_destroy(NULL);
+//php_hash_bin2hex(hash, output64, 64);
+secp256k1_context_destroy(sign);
+secp256k1_context_destroy(NULL);
 
 	RETURN_STRINGL((const char *)output64, sizeof(output64));
 }

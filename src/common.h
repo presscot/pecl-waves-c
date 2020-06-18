@@ -33,8 +33,8 @@
 #include <waves/b58.h>
 #include <waves/crypto.h>
 #include <waves/sha3.h>
-#include <secp256k1.h>
-#include <secp256k1_preallocated.h>
+#include <secp256k1/secp256k1.h>
+#include <secp256k1/secp256k1_recovery.h>
 
 #ifdef ZTS
 # include <TSRM.h>
