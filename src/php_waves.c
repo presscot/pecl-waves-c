@@ -833,7 +833,7 @@ secp256k1_context_destroy(NULL);
 
 array_init(return_value);
 add_assoc_long(return_value, "recid", recid);
-add_assoc_stringl(return_value, "signature", (const char *)output64, sizeof(output64), 1);
+add_assoc_stringl(return_value, "signature", (const char *)output64, sizeof(output64));
 }
 
 
