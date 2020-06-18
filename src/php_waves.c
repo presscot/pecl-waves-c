@@ -826,8 +826,14 @@ char hash[128];
     ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN);
     secp256k1_ecdsa_sign_recoverable(ctx, &sig, message, private_key, NULL, NULL);
 
+    secp256k1_ecdsa_recoverable_signature_serialize_compact(ctx, output64, &recid, &sig);
 
-	RETURN_STRINGL((const char *)output64, sizeof(output64));
+secp256k1_context_destroy(ctx);
+secp256k1_context_destroy(NULL);
+
+array_init(return_value);
+add_assoc_long(return_value, "recid", recid);
+add_assoc_stringl(return_value, "signature", (const char *)output64, sizeof(output64), 1);
 }
 
 
