@@ -803,7 +803,7 @@ PHP_FUNCTION(keccak256)
 	RETURN_STRINGL((const char *)hash, sizeof(hash));
 }
 
-/* {{{ proto string secp256k1_sign(string message, string private_key) */
+/* {{{ proto array secp256k1_sign(string message, string private_key) */
 PHP_FUNCTION(secp256k1_sign)
 {
 	char *message;
