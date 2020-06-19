@@ -19,6 +19,8 @@
 #include "priv.h"
 #include "rlp/utils.h"
 #include "rlp/RLP.h"
+#include <stdio.h>
+#include <string.h>
 
 #include <php/ext/hash/php_hash.h>
 
