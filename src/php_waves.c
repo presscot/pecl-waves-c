@@ -820,7 +820,7 @@ PHP_FUNCTION(rlp_encode)
 
 
 
-	RETURN_STRINGL((const char *)data, data(hash));
+	RETURN_STRINGL((const char *)data, sizeof(data));
 }
 
 /* {{{ proto array secp256k1_sign(string message, string private_key) */
