@@ -17,8 +17,6 @@
 #include "zend_exceptions.h"
 #include "ext/spl/spl_exceptions.h"
 #include "priv.h"
-#include <stdio.h>
-#include <string.h>
 #include "utils.h"
 #include "RLP.h"
 
@@ -837,13 +835,17 @@ int wallet_ethereum_assemble_tx(EthereumSignTx *msg, EthereumSig *tx, uint64_t *
     return length;
 }
 
-/* {{{ proto string rlp_encode(string data) */
+/* {{{ proto string rlp_encode(string data2) */
 PHP_FUNCTION(rlp_encode)
 {
+char *data2;
+size_t data_len;
      char rawTx[256];
     EthereumSignTx tx;
     EthereumSig signature;
     uint64_t raw_tx_bytes[24];
+
+
      char *nonce = "00";
      char *gas_price = "4a817c800";
      char *gas_limit = "5208";
@@ -854,6 +856,10 @@ PHP_FUNCTION(rlp_encode)
      char *s = "440ffd775ce91a833ab410777204d5341a6f9fa91216a6f3ee2c051fea6a0428";
     uint32_t v = 27;
 
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s",
+				&data, &data_len) == FAILURE) {
+		return;
+	}
 
     tx.nonce.size = size_of_bytes(strlen(nonce));
     hex2byte_arr(nonce, strlen(nonce), tx.nonce.bytes, tx.nonce.size);
