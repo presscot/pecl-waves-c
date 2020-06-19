@@ -821,9 +821,9 @@ int wallet_ethereum_assemble_tx(EthereumSignTx *msg, EthereumSig *tx, uint64_t *
                           &(new_msg.to.size), false);
     wallet_encode_element(msg->value.bytes, msg->value.size,
                           new_msg.value.bytes, &(new_msg.value.size), false);
-    wallet_encode_element(msg->data_initial_chunk.bytes,
-                          msg->data_initial_chunk.size, new_msg.data_initial_chunk.bytes,
-                          &(new_msg.data_initial_chunk.size), false);
+    //wallet_encode_element(msg->data_initial_chunk.bytes,
+     //                     msg->data_initial_chunk.size, new_msg.data_initial_chunk.bytes,
+     //                     &(new_msg.data_initial_chunk.size), false);
 
   //  wallet_encode_int(tx->signature_v, &(new_tx.signature_v));
    // wallet_encode_element(tx->signature_r.bytes, tx->signature_r.size,
