@@ -851,14 +851,14 @@ PHP_FUNCTION(rlp_encode)
         EthereumSignTx tx;
         EthereumSig signature;
         uint64_t raw_tx_bytes[24];
-        const char *nonce = "00";
-        const char *gas_price = "4a817c800";
-        const char *gas_limit = "5208";
-        const char *to = "e0defb92145fef3c3a945637705fafd3aa74a241";
-        const char *value = "de0b6b3a7640000";
-        const char *data = "00";
-        const char *r = "09ebb6ca057a0535d6186462bc0b465b561c94a295bdb0621fc19208ab149a9c";
-        const char *s = "440ffd775ce91a833ab410777204d5341a6f9fa91216a6f3ee2c051fea6a0428";
+         char *nonce = "00";
+         char *gas_price = "4a817c800";
+         char *gas_limit = "5208";
+         char *to = "e0defb92145fef3c3a945637705fafd3aa74a241";
+         char *value = "de0b6b3a7640000";
+         char *data = "00";
+         char *r = "09ebb6ca057a0535d6186462bc0b465b561c94a295bdb0621fc19208ab149a9c";
+         char *s = "440ffd775ce91a833ab410777204d5341a6f9fa91216a6f3ee2c051fea6a0428";
         uint32_t v = 27;
 
 
