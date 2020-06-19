@@ -882,9 +882,10 @@ PHP_FUNCTION(rlp_encode)
     signature.signature_s.size = size_of_bytes(strlen(s));
     hex2byte_arr(s, strlen(s), signature.signature_s.bytes, signature.signature_s.size);
 
+    int length = wallet_ethereum_assemble_tx(&tx, &signature, raw_tx_bytes);
+    int8_to_char((uint8_t *) raw_tx_bytes, length, rawTx);
 
-
-	RETURN_STRINGL((const char *)data, sizeof(data));
+	RETURN_STRINGL((const char *)rawTx, sizeof(rawTx));
 }
 
 /* {{{ proto array secp256k1_sign(string message, string private_key) */
