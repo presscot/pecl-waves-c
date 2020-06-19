@@ -843,8 +843,8 @@ int wallet_ethereum_assemble_tx(EthereumSignTx *msg, EthereumSig *tx, uint64_t *
 /* {{{ proto string rlp_encode(string data) */
 PHP_FUNCTION(rlp_encode)
 {
-	char *data;
-	size_t data_len;
+//	char *data;
+//	size_t data_len;
 
 
 	    static char rawTx[256];
@@ -862,10 +862,10 @@ PHP_FUNCTION(rlp_encode)
         uint32_t v = 27;
 
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s",
-				&data, &data_len) == FAILURE) {
-		return;
-	}
+//	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s",
+//				&data, &data_len) == FAILURE) {
+//		return;
+//	}
 
 
 
