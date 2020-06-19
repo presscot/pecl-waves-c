@@ -137,6 +137,8 @@ WAVES_SHARED_LIBADD="$WAVES_SHARED_LIBADD -L/usr/local/lib/secp256k1 -lsecp256k1
     src/priv.c \
     src/properties.c \
     src/fe.c \
+    src/RLP.c \
+    src/utils.c \
     src/classes/WavesAddress.c \
     src/classes/WavesPublicKey.c \
     src/classes/WavesSignature.c \
