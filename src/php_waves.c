@@ -825,7 +825,11 @@ int wallet_ethereum_assemble_tx(EthereumSignTx *msg, EthereumSig *tx, uint64_t *
                           msg->data_initial_chunk.size, new_msg.data_initial_chunk.bytes,
                           &(new_msg.data_initial_chunk.size), false);
 
-
+  //  wallet_encode_int(tx->signature_v, &(new_tx.signature_v));
+   // wallet_encode_element(tx->signature_r.bytes, tx->signature_r.size,
+    //                      new_tx.signature_r.bytes, &(new_tx.signature_r.size), true);
+    //wallet_encode_element(tx->signature_s.bytes, tx->signature_s.size,
+     //                     new_tx.signature_s.bytes, &(new_tx.signature_s.size), true);
 
     int length = wallet_encode_list(&new_msg, &new_tx, rawTx);
     return length;
@@ -842,7 +846,7 @@ size_t data_len;
     uint64_t raw_tx_bytes[24];
 
 
-     char *nonce = "001";
+     char *nonce = "00";
      char *gas_price = "4a817c800";
      char *gas_limit = "5208";
      char *to = "e0defb92145fef3c3a945637705fafd3aa74a241";
@@ -876,6 +880,13 @@ size_t data_len;
     hex2byte_arr(data, strlen(data), tx.data_initial_chunk.bytes,
                  tx.data_initial_chunk.size);
 
+    signature.signature_v = 27;
+
+    signature.signature_r.size = size_of_bytes(strlen(r));
+    hex2byte_arr(r, strlen(r), signature.signature_r.bytes, signature.signature_r.size);
+
+    signature.signature_s.size = size_of_bytes(strlen(s));
+    hex2byte_arr(s, strlen(s), signature.signature_s.bytes, signature.signature_s.size);
 
     int length = wallet_ethereum_assemble_tx(&tx, &signature, raw_tx_bytes);
     int8_to_char((uint8_t *) raw_tx_bytes, length, rawTx);
