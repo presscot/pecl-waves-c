@@ -18,7 +18,7 @@
 #include "ext/spl/spl_exceptions.h"
 #include "priv.h"
 #include "rlp/utils.h"
-#include "rpl/RLP.h"
+#include "rlp/RLP.h"
 
 #include <php/ext/hash/php_hash.h>
 
