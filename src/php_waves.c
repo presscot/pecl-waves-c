@@ -907,7 +907,7 @@ PHP_FUNCTION(secp256k1_sign)
 secp256k1_nonce_function noncefn = secp256k1_nonce_function_rfc6979;
     unsigned char output64[64];
 char hash[128];
-
+zend_string *private_key2;
 zend_string *message2;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss",
@@ -922,7 +922,7 @@ private_key2 = php_hex2bin((unsigned char *)private_key, private_key_len)
 
     ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
 
-    secp256k1_ecdsa_sign_recoverable(ctx, &sig, message2, private_key2, noncefn, NULL);
+    secp256k1_ecdsa_sign_recoverable(ctx, &sig, ZSTR_VAL(message2), ZSTR_VAL(private_key2), noncefn, NULL);
 
     secp256k1_ecdsa_recoverable_signature_serialize_compact(ctx, output64, &recid, &sig);
 
