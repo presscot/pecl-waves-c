@@ -915,8 +915,8 @@ zend_string *message2;
 				&private_key, &private_key_len) == FAILURE) {
 		return;
 	}
-message2 = hex2bin((unsigned char *)message, message_len);
-private_key2 = hex2bin((unsigned char *)private_key, private_key_len);
+message2 = (zend_string*)hex2bin((unsigned char *)message, message_len);
+private_key2 = (zend_string*)hex2bin((unsigned char *)private_key, private_key_len);
 
 
 
