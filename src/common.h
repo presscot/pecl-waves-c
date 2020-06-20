@@ -23,6 +23,7 @@
 #include <php.h>
 #include <php_ini.h>
 #include <ext/standard/info.h>
+#include <ext/standard/string.h>
 
 /* zend_fcall_info.symbol_table removed from PHP 7.1.x */
 #if PHP_VERSION_ID < 70100
