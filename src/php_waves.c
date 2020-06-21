@@ -907,17 +907,18 @@ PHP_FUNCTION(secp256k1_sign)
 secp256k1_nonce_function noncefn = secp256k1_nonce_function_rfc6979;
     unsigned char output64[64];
 char hash[128];
-zend_string *private_key2;
-zend_string *message2;
+char private_key2[32];
+char *message2[32];
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss",
 				&message, &message_len,
 				&private_key, &private_key_len) == FAILURE) {
 		return;
 	}
-message2 = (zend_string*)zif_hex2bin((unsigned char *)message, message_len);
-private_key2 = (zend_string*)zif_hex2bin((unsigned char *)private_key, private_key_len);
 
+
+	hex2byte_arr(message, message_len, &message2, 32);
+hex2byte_arr(private_key, private_key_len, &private_key2, 32);
 
 
     ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
