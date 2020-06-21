@@ -869,8 +869,12 @@ num_data = zend_hash_num_elements(Z_ARRVAL_P(tx_data));
 //uint_least8_t test[255] = ;;
 	ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(tx_data), item) {
 		//test = zval_get_long(item);
-		if (Z_TYPE_P(item) != IS_STRING) {
-php_printf("Number of elements in hashtable: %s\n", Z_STRVAL_P(item) );
+		if (Z_TYPE_P(item) == IS_STRING) {
+php_printf("stringe: %s\n", Z_STRVAL_P(item) );
+		}else if (Z_TYPE_P(item) == IS_LONG){
+php_printf("Number : %d\n", Z_LVAL_P(item) );
+		}else{
+		php_printf("else\n" );
 		}
 	} ZEND_HASH_FOREACH_END();
 php_printf("Number of elements in hashtable: %ld\n", num_data);
