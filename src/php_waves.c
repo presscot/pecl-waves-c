@@ -908,7 +908,7 @@ secp256k1_nonce_function noncefn = secp256k1_nonce_function_rfc6979;
     unsigned char output64[64];
 char hash[128];
 char private_key2[32];
-char *message2[32];
+char message2[32];
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss",
 				&message, &message_len,
