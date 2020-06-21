@@ -870,7 +870,7 @@ num_data = zend_hash_num_elements(Z_ARRVAL_P(tx_data));
 	ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(tx_data), item) {
 		//test = zval_get_long(item);
 		if (Z_TYPE_P(item) != IS_STRING) {
-php_printf("Number of elements in hashtable: %s\n", Z_TYPE_P(item) );
+php_printf("Number of elements in hashtable: %s\n", Z_STRVAL_P(item) );
 		}
 	} ZEND_HASH_FOREACH_END();
 php_printf("Number of elements in hashtable: %ld\n", num_data);
@@ -928,8 +928,8 @@ char hash[128];
 //	unsigned char *ret = (unsigned char *)ZSTR_VAL(str);
 //zend_string_efree(str);
 
-//char private_key2[32];
-//char message2[32];
+char private_key2[32];
+char message2[32];
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ss",
 				&message, &message_len,
