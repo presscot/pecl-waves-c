@@ -923,7 +923,7 @@ hex2byte_arr(private_key, private_key_len, &private_key2, 32);
 
     ctx = secp256k1_context_create(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY);
 
-    secp256k1_ecdsa_sign_recoverable(ctx, &sig, ZSTR_VAL(message2), ZSTR_VAL(private_key2), noncefn, NULL);
+    secp256k1_ecdsa_sign_recoverable(ctx, &sig, message2, private_key2, noncefn, NULL);
 
     secp256k1_ecdsa_recoverable_signature_serialize_compact(ctx, output64, &recid, &sig);
 
