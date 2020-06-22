@@ -885,7 +885,7 @@ num_data = zend_hash_num_elements(Z_ARRVAL_P(tx_data));
             encrypted = safe_emalloc(sizeof(uint_least8_t), str_len + 5, 0);
 //wyciek
 		    wallet_encode_element(str, str_len, encrypted, &encrypted_len, false);
-		    head = addElementToList(list_node_t *head, (void*)encrypted,  encrypted_len);
+		    head = addElementToList(head, (void*)encrypted,  encrypted_len);
 sum += encrypted_len;
 
 php_printf("stringe: %s\n", Z_STRVAL_P(item) );
