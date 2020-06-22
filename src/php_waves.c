@@ -817,8 +817,8 @@ PHP_FUNCTION(rlp_encode)
 
 
 
-    char rawTx[256];
-    uint8_t raw_tx_bytes[255];
+    char rawTx*;
+    uint8_t* raw_tx_bytes;
 
 
     //uint_least8_t str[1024];
@@ -855,11 +855,14 @@ php_printf("encrypted_len: %d\n", encrypted_len );
 
 	//zadeklarowac zmienną do wyniku wynik
 
-//raw_tx_bytes = safe_emalloc(sizeof(uint64_t), sum+5, 0);
+raw_tx_bytes = safe_emalloc(sizeof(uint8_t), sum+5, 0);
 
     length = wallet_encode_list(raw_tx_bytes, sum, head);
 
 php_printf("length: %d\n", length );
+
+
+raw_tx = safe_emalloc(sizeof(char), length*2, 0);
 
     int8_to_char((uint8_t *) raw_tx_bytes, length, rawTx);
 
