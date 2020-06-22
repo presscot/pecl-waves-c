@@ -25,7 +25,7 @@ int wallet_copy_rpl(uint8_t *source, uint8_t *destination, uint8_t size,
 int wallet_encode_list(uint64_t *rawTx, uint32_t totalLength, list_node_t* list) {
     uint8_t *data;
 
-    list = getFirstElementOfList(list_node_t *list);
+    list = getFirstElementOfList(list);
 
     int copyPos;
     if (totalLength < SIZE_THRESHOLD) {
