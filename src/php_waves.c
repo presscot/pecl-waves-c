@@ -830,7 +830,7 @@ PHP_FUNCTION(rlp_encode)
             hex2byte_arr(Z_STRVAL_P(item), Z_STRLEN_P(item), bytes, bytes_len);
             encrypted = safe_emalloc(sizeof(uint_least8_t), bytes_len, 5);
 		    rlp_encode_element(bytes, bytes_len, encrypted, &encrypted_len, false);
-            EFREE(bytes)
+            //EFREE(bytes)
 		    head = addElementToList(head, (void*)encrypted,  encrypted_len);
             sum += encrypted_len;
 		}else if (Z_TYPE_P(item) == IS_LONG){
@@ -850,9 +850,9 @@ PHP_FUNCTION(rlp_encode)
 
     raw_tx = safe_emalloc(sizeof(char), length*2, 0);
     int8_to_char((uint8_t *) raw_tx_bytes, length, raw_tx);
-    EFREE(raw_tx_bytes)
+    //EFREE(raw_tx_bytes)
 
-    clearList(&head,true);
+    //clearList(&head,true);
 
 	RETURN_STRINGL((const char *)raw_tx, length*2);
 }
