@@ -845,11 +845,20 @@ PHP_FUNCTION(rlp_encode)
             sum += encrypted_len;
 php_printf("encrypted_len: %d\n", encrypted_len );
             //php_printf("stringe: %s\n", Z_STRVAL_P(item) );
+
 		}else if (Z_TYPE_P(item) == IS_LONG){
 		//test = zval_get_long(item);
-            php_printf("Number : %d\n", Z_LVAL_P(item) );
+
+encrypted = (uint_least8_t*)safe_emalloc(sizeof(uint32_t), 1, 0);
+
+                    wallet_encode_int(Z_LVAL_P(item), (uint32_t*)encrypted);
+				    head = addElementToList(head, (void*)encrypted,  1);
+                    sum += 1;
+
+
+            //php_printf("Number : %d\n", Z_LVAL_P(item) );
 		}else{
-		    php_printf("else\n" );
+		    //php_printf("else\n" );
 		}
 	} ZEND_HASH_FOREACH_END();
 
