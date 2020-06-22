@@ -32,6 +32,7 @@ void int8_to_char(uint8_t *buffer, int len, char *out);
 list_node_t* createElement(void * pointer, pb_size_t size );
 list_node_t* addElementToList(list_node_t *head, void * pointer, pb_size_t size);
 void removeElementFromList(list_node_t *element, void * pointer, pb_size_t size);
+list_node_t* getFirstElementOfList(list_node_t *element);
 void clearLeftOfElement(list_node_t *element);
 void clearRightOfElement(list_node_t *element);
 void clearList(list_node_t **element);

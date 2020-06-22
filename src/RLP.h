@@ -80,8 +80,7 @@ typedef struct _EncodeEthereumTxRequest {
 /* @@protoc_insertion_point(struct:EthereumTxRequest) */
 } EncodeEthereumTxRequest;
 
-int wallet_encode_list(EncodeEthereumSignTx *new_msg, EncodeEthereumTxRequest *new_tx,
-                       uint64_t *rawTx);
+int wallet_encode_list(uint64_t *rawTx, uint32_t totalLength, list_node_t* list);
 
 void wallet_encode_element(pb_byte_t *bytes, pb_size_t size,
                            pb_byte_t *new_bytes, pb_size_t *new_size, bool remove_leading_zeros);

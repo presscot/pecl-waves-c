@@ -845,22 +845,12 @@ PHP_FUNCTION(rlp_encode)
     EthereumSig signature;
     uint64_t raw_tx_bytes[24];
 
-
-     char *nonce = "01";
-     char *gas_price = "4a817c800";
-     char *gas_limit = "5208";
-     char *to = "e0defb92145fef3c3a945637705fafd3aa74a241";
-     char *value = "de0b6b3a7640000";
-     char *data = "00";
-     char *r = "09ebb6ca057a0535d6186462bc0b465b561c94a295bdb0621fc19208ab149a9c";
-     char *s = "440ffd775ce91a833ab410777204d5341a6f9fa91216a6f3ee2c051fea6a0428";
-    uint32_t v = 27;
 uint32_t num_data;
 uint32_t str_len = 0;
 uint32_t encrypted_len = 0, sum = 0;
 uint_least8_t str[1024];
 uint_least8_t *encrypted = NULL, *result = NULL;
-
+int length;
 list_node_t* head = NULL;
 
     zval *tx_data, *item;
@@ -898,42 +888,13 @@ php_printf("Number : %d\n", Z_LVAL_P(item) );
 
 	//zadeklarowac zmienną do wyniku wynik
 
-result = safe_emalloc(sizeof(uint_least8_t), sum, 0);
+//rawTx = safe_emalloc(sizeof(uint64_t), sum+5, 0);
 
-    //wallet_encode_list
+    length = wallet_encode_list(raw_tx_bytes, sum, list);
 
 
 
-php_printf("Number of elements in hashtable: %ld\n", num_data);
-    //tx.nonce.size = size_of_bytes(strlen(nonce));
-    //hex2byte_arr(nonce, strlen(nonce), tx.nonce.bytes, tx.nonce.size);
-
-  //  tx.gas_price.size = size_of_bytes(strlen(gas_price));
-  //  hex2byte_arr(gas_price, strlen(gas_price), tx.gas_price.bytes, tx.gas_price.size);
-
-//    tx.gas_limit.size = size_of_bytes(strlen(gas_limit));
-   // hex2byte_arr(gas_limit, strlen(gas_limit), tx.gas_limit.bytes, tx.gas_limit.size);
-
-   // tx.to.size = size_of_bytes(strlen(to));
- //   hex2byte_arr(to, strlen(to), tx.to.bytes, tx.to.size);
-
-  //  tx.value.size = size_of_bytes(strlen(value));
-//    hex2byte_arr(value, strlen(value), tx.value.bytes, tx.value.size);
-
-  //  tx.data_initial_chunk.size = size_of_bytes(strlen(data));
-  //  hex2byte_arr(data, strlen(data), tx.data_initial_chunk.bytes,
-   //              tx.data_initial_chunk.size);
-
-    //signature.signature_v = 27;
-
-  //  signature.signature_r.size = size_of_bytes(strlen(r));
-//    hex2byte_arr(r, strlen(r), signature.signature_r.bytes, signature.signature_r.size);
-
-    //signature.signature_s.size = size_of_bytes(strlen(s));
-   // hex2byte_arr(s, strlen(s), signature.signature_s.bytes, signature.signature_s.size);
-
-    //int length = wallet_ethereum_assemble_tx(&tx, &signature, raw_tx_bytes);
-    //int8_to_char((uint8_t *) raw_tx_bytes, length, rawTx);
+    int8_to_char((uint8_t *) raw_tx_bytes, length, rawTx);
 
 	RETURN_STRINGL((const char *)result, sizeof(result));
 }

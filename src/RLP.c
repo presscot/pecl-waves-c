@@ -22,21 +22,10 @@ int wallet_copy_rpl(uint8_t *source, uint8_t *destination, uint8_t size,
     return ret_val;
 }
 
-int wallet_encode_list(EncodeEthereumSignTx *new_msg, EncodeEthereumTxRequest *new_tx,
-                       uint64_t *rawTx) {
-    uint32_t totalLength = 0;
+int wallet_encode_list(uint64_t *rawTx, uint32_t totalLength, list_node_t* list) {
     uint8_t *data;
 
-    totalLength += new_msg->nonce.size;
-    totalLength += new_msg->gas_price.size;
-    totalLength += new_msg->gas_limit.size;
-    totalLength += new_msg->to.size;
-    totalLength += new_msg->value.size;
-    totalLength += new_msg->data_initial_chunk.size;
-
-    totalLength += 1; //tx->signature_v.size
-    totalLength += new_tx->signature_r.size;
-    totalLength += new_tx->signature_s.size;
+    list = list_node_t* getFirstElementOfList(list_node_t *list);
 
     int copyPos;
     if (totalLength < SIZE_THRESHOLD) {
@@ -65,23 +54,14 @@ int wallet_encode_list(EncodeEthereumSignTx *new_msg, EncodeEthereumTxRequest *n
         free(lenBytes);
     }
 
-    copyPos = wallet_copy_rpl(data + copyPos, new_msg->nonce.bytes,
-                              new_msg->nonce.size, copyPos);
-    copyPos = wallet_copy_rpl(data + copyPos, new_msg->gas_price.bytes,
-                              new_msg->gas_price.size, copyPos);
-    copyPos = wallet_copy_rpl(data + copyPos, new_msg->gas_limit.bytes,
-                              new_msg->gas_limit.size, copyPos);
-    copyPos = wallet_copy_rpl(data + copyPos, new_msg->to.bytes,
-                              new_msg->to.size, copyPos);
-    copyPos = wallet_copy_rpl(data + copyPos, new_msg->value.bytes,
-                              new_msg->value.size, copyPos);
-    copyPos = wallet_copy_rpl(data + copyPos, new_msg->data_initial_chunk.bytes,
-                              new_msg->data_initial_chunk.size, copyPos);
-    copyPos = wallet_copy_rpl(data + copyPos, &new_tx->signature_v, 1, copyPos);
-    copyPos = wallet_copy_rpl(data + copyPos, new_tx->signature_r.bytes,
-                              new_tx->signature_r.size, copyPos);
-    copyPos = wallet_copy_rpl(data + copyPos, new_tx->signature_s.bytes,
-                              new_tx->signature_s.size, copyPos);
+    while( NULL != list ){
+        (list->element).pointer;
+        (list->element).size;
+
+        copyPos = wallet_copy_rpl(data + copyPos, (list->element).pointer, (list->element).size, copyPos);
+
+        list = list->next;
+    }
 
     memcpy(rawTx, data, copyPos);
     return copyPos;

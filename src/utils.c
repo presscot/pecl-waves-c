@@ -101,6 +101,15 @@ void removeElementFromList(list_node_t *element, void * pointer, pb_size_t size)
      return;
 }
 
+
+list_node_t* getFirstElementOfList(list_node_t *element){
+    while( NULL != element->prev){
+        element = element->prev;
+    }
+
+    return element;
+}
+
 void clearLeftOfElement(list_node_t *element){
     list_node_t *prev = NULL, *tmp = NULL;
     prev = element->prev;
