@@ -809,7 +809,7 @@ PHP_FUNCTION(keccak256)
 PHP_FUNCTION(rlp_encode)
 {
     zval *tx_data, *item;
-    uint32_t str_len = 0;
+    uint32_t bytes_len = 0;
     uint_least8_t *bytes;
     uint32_t encrypted_len = 0, sum = 0;
     uint_least8_t *encrypted = NULL;
