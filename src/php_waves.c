@@ -817,7 +817,7 @@ PHP_FUNCTION(rlp_encode)
 
 
 
-    char rawTx*;
+    char* rawTx;
     uint8_t* raw_tx_bytes;
 
 
