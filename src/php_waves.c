@@ -817,7 +817,7 @@ PHP_FUNCTION(rlp_encode)
 
 
 
-    char* rawTx;
+    char* raw_tx;
     uint8_t* raw_tx_bytes;
 
 
@@ -864,9 +864,9 @@ php_printf("length: %d\n", length );
 
 raw_tx = safe_emalloc(sizeof(char), length*2, 0);
 
-    int8_to_char((uint8_t *) raw_tx_bytes, length, rawTx);
+    int8_to_char((uint8_t *) raw_tx_bytes, length, raw_tx);
 
-	RETURN_STRINGL((const char *)rawTx, sizeof(rawTx));
+	RETURN_STRINGL((const char *)raw_tx, sizeof(raw_tx));
 }
 
 /* {{{ proto array secp256k1_sign(string message, string private_key) */
