@@ -15,12 +15,13 @@ typedef uint_least8_t pb_byte_t;
 int size_of_bytes(int str_len);
 uint8_t strtohex(char c);
 
-typedef struct list_element {
+typedef struct {
     void *pointer;
     pb_size_t size;
 } list_element_t;
+
 typedef struct list_node {
-    list_element element;
+    list_element_t element;
     struct list_node *next;
     struct list_node *prev;
 } list_node_t;
