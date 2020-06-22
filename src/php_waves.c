@@ -843,8 +843,8 @@ PHP_FUNCTION(rlp_encode)
 
 		    head = addElementToList(head, (void*)encrypted,  encrypted_len);
             sum += encrypted_len;
-
-            php_printf("stringe: %s\n", Z_STRVAL_P(item) );
+php_printf("encrypted_len: %d\n", encrypted_len );
+            //php_printf("stringe: %s\n", Z_STRVAL_P(item) );
 		}else if (Z_TYPE_P(item) == IS_LONG){
 		//test = zval_get_long(item);
             php_printf("Number : %d\n", Z_LVAL_P(item) );
@@ -855,11 +855,11 @@ PHP_FUNCTION(rlp_encode)
 
 	//zadeklarowac zmienną do wyniku wynik
 
-//rawTx = safe_emalloc(sizeof(uint64_t), sum+5, 0);
+//raw_tx_bytes = safe_emalloc(sizeof(uint64_t), sum+5, 0);
 
     length = wallet_encode_list(raw_tx_bytes, sum, head);
 
-
+php_printf("length: %d\n", length );
 
     int8_to_char((uint8_t *) raw_tx_bytes, length, rawTx);
 
