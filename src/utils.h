@@ -5,6 +5,8 @@
 #ifndef RLP_UTILS_H
 #define RLP_UTILS_H
 
+#include <php.h>
+#include <php_ini.h>
 #include <stdint.h>
 #include <stddef.h>
 #include <stdlib.h>

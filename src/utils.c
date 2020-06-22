@@ -147,7 +147,7 @@ void clearList(list_node_t **element, bool child){
     clearRightOfElement(*element);
 
     if(child){
-        efree((*element)->element).pointer);
+        efree(((*element)->element).pointer);
     }
 
     efree(*element);
