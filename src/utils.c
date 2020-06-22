@@ -54,7 +54,7 @@ void int8_to_char(uint8_t *buffer, int len, char *out) {
 list_node_t* createElement(void * pointer, pb_size_t size ){
     list_node_t *head = NULL;
 
-    head = (list_node_t *)malloc(sizeof(list_node_t));
+    head = (list_node_t *)emalloc(sizeof(list_node_t));
     (head->element).pointer = pointer;
     (head->element).size = size;
     head->next = NULL;
@@ -96,7 +96,7 @@ void removeElementFromList(list_node_t *element, void * pointer, pb_size_t size)
         next->next = next;
      }
 
-     free(element);
+     efree(element);
 
      return;
 }
@@ -121,7 +121,7 @@ void clearLeftOfElement(list_node_t *element, bool child){
         if(child){
             efree((*element)->element).pointer);
         }
-        free(tmp);
+        efree(tmp);
         tmp = NULL;
     }
 }
@@ -137,7 +137,7 @@ void clearRightOfElement(list_node_t *element, bool child){
         if(child){
             efree((*element)->element).pointer);
         }
-        free(tmp);
+        efree(tmp);
         tmp = NULL;
     }
 }
@@ -150,6 +150,6 @@ void clearList(list_node_t **element, bool child){
         efree((*element)->element).pointer);
     }
 
-    free(*element);
+    efree(*element);
     element = NULL;
 }

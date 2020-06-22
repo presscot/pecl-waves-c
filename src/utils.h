@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef uint32_t pb_size_t;
 typedef uint_least8_t pb_byte_t;

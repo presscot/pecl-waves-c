@@ -25,7 +25,7 @@ int rlp_encode_list(uint8_t *rawTx, uint32_t totalLength, list_node_t* list) {
 
     int copyPos;
     if (totalLength < SIZE_THRESHOLD) {
-        data = malloc(1 + totalLength);
+        data = emalloc(1 + totalLength);
         data[0] = (int8_t) (OFFSET_SHORT_LIST + totalLength);
         copyPos = 1;
     } else {
@@ -37,17 +37,17 @@ int rlp_encode_list(uint8_t *rawTx, uint32_t totalLength, list_node_t* list) {
         }
         tmpLength = totalLength;
         uint8_t *lenBytes;
-        lenBytes = malloc(byteNum);
+        lenBytes = emalloc(byteNum);
         int i;
         for (i = 0; i < byteNum; ++i) {
             lenBytes[byteNum - 1 - i] =
                     (uint8_t) ((tmpLength >> (8 * i)) & 0xFF);
         }
-        data = malloc(1 + byteNum + totalLength);
+        data = emalloc(1 + byteNum + totalLength);
         data[0] = (uint8_t) (OFFSET_LONG_LIST + byteNum);
         memcpy(data + 1, lenBytes, byteNum);
         copyPos = byteNum + 1;
-        free(lenBytes);
+        efree(lenBytes);
     }
 
     while( NULL != list ){
@@ -77,16 +77,16 @@ void rlp_encode_element(pb_byte_t *bytes, pb_size_t size,
             }
         }
         if (leading_count > 0) {
-            pbytes = malloc(size - leading_count);
+            pbytes = emalloc(size - leading_count);
             memcpy(pbytes, bytes + 1, (size - leading_count));
             psize = (pb_size_t) (size - leading_count);
         }else{
-            pbytes = malloc(size);
+            pbytes = emalloc(size);
             memcpy(pbytes, bytes, (size));
             psize = size;
         }
     }else{
-        pbytes = malloc(size);
+        pbytes = emalloc(size);
         memcpy(pbytes, bytes, (size));
         psize = size;
     }
@@ -115,7 +115,7 @@ void rlp_encode_element(pb_byte_t *bytes, pb_size_t size,
             ++lengthOfLength;
             tmpLength = tmpLength >> 8;
         }
-        pb_byte_t *data = malloc(1 + lengthOfLength + psize);
+        pb_byte_t *data = emalloc(1 + lengthOfLength + psize);
         data[0] = (pb_byte_t) (OFFSET_LONG_ITEM + lengthOfLength);
         tmpLength = psize;
         int i;
@@ -126,8 +126,8 @@ void rlp_encode_element(pb_byte_t *bytes, pb_size_t size,
         memcpy(data + 1 + lengthOfLength, pbytes, psize);
         memcpy(new_bytes, data, ((1 + lengthOfLength + psize)));
         *new_size = (1 + lengthOfLength + psize);
-        free(pbytes);
-        free(data);
+        efree(pbytes);
+        efree(data);
     }
 }
 
