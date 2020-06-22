@@ -858,7 +858,7 @@ php_printf("Number : %d\n", Z_LVAL_P(item) );
 
 //rawTx = safe_emalloc(sizeof(uint64_t), sum+5, 0);
 
-    length = wallet_encode_list(raw_tx_bytes, sum, list);
+    length = wallet_encode_list(raw_tx_bytes, sum, head);
 
 
 
