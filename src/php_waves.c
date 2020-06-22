@@ -808,49 +808,46 @@ PHP_FUNCTION(keccak256)
 /* {{{ proto string rlp_encode(array tx_data) */
 PHP_FUNCTION(rlp_encode)
 {
+    zval *tx_data, *item;
+    uint32_t str_len = 0;
+    uint_least8_t *bytes;
+    uint32_t encrypted_len = 0, sum = 0;
+    uint_least8_t *encrypted = NULL;
+    list_node_t* head = NULL;
 
-
-     char rawTx[256];
-    EthereumSignTx tx;
-    EthereumSig signature;
+    //char rawTx[256];
     uint64_t raw_tx_bytes[24];
 
-uint32_t num_data;
-uint32_t str_len = 0;
-uint32_t encrypted_len = 0, sum = 0;
-uint_least8_t str[1024];
-uint_least8_t *encrypted = NULL, *result = NULL;
-int length;
-list_node_t* head = NULL;
 
-    zval *tx_data, *item;
+    //uint_least8_t str[1024];
+    //uint_least8_t *encrypted = NULL, *result = NULL;
+    int length;
+
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "a",
 				&tx_data) == FAILURE) {
 		return;
 	}
-num_data = zend_hash_num_elements(Z_ARRVAL_P(tx_data));
 
-//stylearr = safe_emalloc(sizeof(int), num_styles, 0);
-//uint_least8_t test[255] = ;;
 	ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(tx_data), item) {
-		//test = zval_get_long(item);
 		if (Z_TYPE_P(item) == IS_STRING) {
-
-            str_len = size_of_bytes(Z_STRLEN_P(item));
-            hex2byte_arr(Z_STRVAL_P(item), Z_STRLEN_P(item), str, str_len);
+            bytes_len = size_of_bytes(Z_STRLEN_P(item));
+            bytes = safe_emalloc(sizeof(uint_least8_t), bytes_len, 0);
+            hex2byte_arr(Z_STRVAL_P(item), Z_STRLEN_P(item), bytes, bytes_len);
 //+5 // 1 + int 4 bytes
-            encrypted = safe_emalloc(sizeof(uint_least8_t), str_len + 5, 0);
+            encrypted = safe_emalloc(sizeof(uint_least8_t), bytes_len + 5, 0);
 //wyciek
-		    wallet_encode_element(str, str_len, encrypted, &encrypted_len, false);
-		    head = addElementToList(head, (void*)encrypted,  encrypted_len);
-sum += encrypted_len;
+		    wallet_encode_element(bytes, bytes_len, encrypted, &encrypted_len, false);
 
-php_printf("stringe: %s\n", Z_STRVAL_P(item) );
+		    head = addElementToList(head, (void*)encrypted,  encrypted_len);
+            sum += encrypted_len;
+
+            php_printf("stringe: %s\n", Z_STRVAL_P(item) );
 		}else if (Z_TYPE_P(item) == IS_LONG){
-php_printf("Number : %d\n", Z_LVAL_P(item) );
+		//test = zval_get_long(item);
+            php_printf("Number : %d\n", Z_LVAL_P(item) );
 		}else{
-		php_printf("else\n" );
+		    php_printf("else\n" );
 		}
 	} ZEND_HASH_FOREACH_END();
 
@@ -858,7 +855,7 @@ php_printf("Number : %d\n", Z_LVAL_P(item) );
 
 //rawTx = safe_emalloc(sizeof(uint64_t), sum+5, 0);
 
-    //length = wallet_encode_list(raw_tx_bytes, sum, head);
+    /length = wallet_encode_list(raw_tx_bytes, sum, head);
 
 
 
