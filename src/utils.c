@@ -110,7 +110,7 @@ list_node_t* getFirstElementOfList(list_node_t *element){
     return element;
 }
 
-void clearLeftOfElement(list_node_t *element){
+void clearLeftOfElement(list_node_t *element, bool child){
     list_node_t *prev = NULL, *tmp = NULL;
     prev = element->prev;
     element->prev = NULL;
@@ -118,12 +118,15 @@ void clearLeftOfElement(list_node_t *element){
     while(NULL != prev){
         tmp = prev;
         prev = prev->prev;
+        if(child){
+            efree((*element)->element).pointer);
+        }
         free(tmp);
         tmp = NULL;
     }
 }
 
-void clearRightOfElement(list_node_t *element){
+void clearRightOfElement(list_node_t *element, bool child){
     list_node_t *next = NULL, *tmp = NULL;
     next = element->next;
     element->next = NULL;
@@ -131,14 +134,22 @@ void clearRightOfElement(list_node_t *element){
     while(NULL != next){
         tmp = next;
         next = next->next;
+        if(child){
+            efree((*element)->element).pointer);
+        }
         free(tmp);
         tmp = NULL;
     }
 }
 
-void clearList(list_node_t **element){
-    clearLeftOfElement(&element);
-    clearRightOfElement(&element);
-    free(&element);
+void clearList(list_node_t **element, bool child){
+    clearLeftOfElement(*element);
+    clearRightOfElement(*element);
+
+    if(child){
+        efree((*element)->element).pointer);
+    }
+
+    free(*element);
     element = NULL;
 }

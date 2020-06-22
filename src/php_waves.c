@@ -814,17 +814,9 @@ PHP_FUNCTION(rlp_encode)
     uint32_t encrypted_len = 0, sum = 0;
     uint_least8_t *encrypted = NULL;
     list_node_t* head = NULL;
-
-
-
-    char* raw_tx;
     uint8_t* raw_tx_bytes;
-
-
-    //uint_least8_t str[1024];
-    //uint_least8_t *encrypted = NULL, *result = NULL;
+    char* raw_tx;
     int length;
-
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "a",
 				&tx_data) == FAILURE) {
@@ -836,44 +828,31 @@ PHP_FUNCTION(rlp_encode)
             bytes_len = size_of_bytes(Z_STRLEN_P(item));
             bytes = safe_emalloc(sizeof(uint_least8_t), bytes_len, 0);
             hex2byte_arr(Z_STRVAL_P(item), Z_STRLEN_P(item), bytes, bytes_len);
-//+5 // 1 + int 4 bytes
-            encrypted = safe_emalloc(sizeof(uint_least8_t), bytes_len + 5, 0);
-//wyciek
-		    wallet_encode_element(bytes, bytes_len, encrypted, &encrypted_len, false);
-
+            encrypted = safe_emalloc(sizeof(uint_least8_t), bytes_len, 5);
+		    rlp_encode_element(bytes, bytes_len, encrypted, &encrypted_len, false);
+            EFREE(bytes)
 		    head = addElementToList(head, (void*)encrypted,  encrypted_len);
             sum += encrypted_len;
-php_printf("encrypted_len: %d\n", encrypted_len );
-            //php_printf("stringe: %s\n", Z_STRVAL_P(item) );
-
 		}else if (Z_TYPE_P(item) == IS_LONG){
-		//test = zval_get_long(item);
-
-encrypted = (uint_least8_t*)safe_emalloc(sizeof(uint32_t), 1, 0);
-
-                    wallet_encode_int(Z_LVAL_P(item), (uint32_t*)encrypted);
-				    head = addElementToList(head, (void*)encrypted,  1);
-                    sum += 1;
-
-
-            //php_printf("Number : %d\n", Z_LVAL_P(item) );
+            encrypted = (uint_least8_t*)safe_emalloc(sizeof(uint32_t), 1, 0);
+            rlp_encode_int(Z_LVAL_P(item), (uint32_t*)encrypted);
+		    head = addElementToList(head, (void*)encrypted,  1);
+            sum += 1;
 		}else{
-		    //php_printf("else\n" );
+			zend_throw_exception_ex(spl_ce_InvalidArgumentException, 0,
+					"Function except only with hex strings and integers");
+			return;
 		}
 	} ZEND_HASH_FOREACH_END();
+    //+5 // 1 + int 4 bytes
+    raw_tx_bytes = safe_emalloc(sizeof(uint8_t), sum, 5);
+    length = rlp_encode_list(raw_tx_bytes, sum, head);
 
-	//zadeklarowac zmienną do wyniku wynik
-
-raw_tx_bytes = safe_emalloc(sizeof(uint8_t), sum+5, 0);
-
-    length = wallet_encode_list(raw_tx_bytes, sum, head);
-
-php_printf("length: %d\n", length );
-
-
-raw_tx = safe_emalloc(sizeof(char), length*2, 0);
-
+    raw_tx = safe_emalloc(sizeof(char), length*2, 0);
     int8_to_char((uint8_t *) raw_tx_bytes, length, raw_tx);
+    EFREE(raw_tx_bytes)
+
+    clearList(&head,true);
 
 	RETURN_STRINGL((const char *)raw_tx, length*2);
 }

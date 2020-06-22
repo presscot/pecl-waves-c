@@ -49,6 +49,8 @@ ZEND_TSRMLS_CACHE_EXTERN();
 # define PHP_WAVES_ASSERT(x)
 #endif
 
+#define EFREE(v) efree(v); v=NULL;
+
 #endif /* PHP_WAVES_H */
 /*
  * Local variables:

@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2016-2018 . All Rights Reserved.
- */
-
 #include <stdlib.h>
 #include <string.h>
 #include "RLP.h"
@@ -12,7 +8,7 @@
 #define OFFSET_LONG_ITEM  0xb7
 #define OFFSET_SHORT_ITEM 0x80
 
-int wallet_copy_rpl(uint8_t *source, uint8_t *destination, uint8_t size,
+int rlp_copy(uint8_t *source, uint8_t *destination, uint8_t size,
                     int copyPos) {
     int ret_val = copyPos;
     if (size != 0) {
@@ -22,7 +18,7 @@ int wallet_copy_rpl(uint8_t *source, uint8_t *destination, uint8_t size,
     return ret_val;
 }
 
-int wallet_encode_list(uint8_t *rawTx, uint32_t totalLength, list_node_t* list) {
+int rlp_encode_list(uint8_t *rawTx, uint32_t totalLength, list_node_t* list) {
     uint8_t *data;
 
     list = getFirstElementOfList(list);
@@ -57,9 +53,7 @@ int wallet_encode_list(uint8_t *rawTx, uint32_t totalLength, list_node_t* list) 
     while( NULL != list ){
         (list->element).pointer;
         (list->element).size;
-
-        copyPos = wallet_copy_rpl(data + copyPos, (list->element).pointer, (list->element).size, copyPos);
-
+        copyPos = rlp_copy(data + copyPos, (list->element).pointer, (list->element).size, copyPos);
         list = list->next;
     }
 
@@ -67,12 +61,10 @@ int wallet_encode_list(uint8_t *rawTx, uint32_t totalLength, list_node_t* list) 
     return copyPos;
 }
 
-void wallet_encode_element(pb_byte_t *bytes, pb_size_t size,
+void rlp_encode_element(pb_byte_t *bytes, pb_size_t size,
                            pb_byte_t *new_bytes, pb_size_t *new_size, bool remove_leading_zeros) {
-
     pb_byte_t *pbytes;
     pb_size_t psize;
-
 
     if (remove_leading_zeros) {
         int leading_count = 0;
@@ -139,7 +131,7 @@ void wallet_encode_element(pb_byte_t *bytes, pb_size_t size,
     }
 }
 
-void wallet_encode_byte(pb_byte_t singleByte, pb_byte_t *new_bytes) {
+void rlp_encode_byte(pb_byte_t singleByte, pb_byte_t *new_bytes) {
     if ((singleByte & 0xFF) == 0) {
         new_bytes[0] = (pb_byte_t) OFFSET_SHORT_ITEM;
     } else if ((singleByte & 0xFF) <= 0x7F) {
@@ -150,9 +142,9 @@ void wallet_encode_byte(pb_byte_t singleByte, pb_byte_t *new_bytes) {
     }
 }
 
-void wallet_encode_short(uint16_t singleShort, pb_byte_t *new_bytes) {
+void rlp_encode_short(uint16_t singleShort, pb_byte_t *new_bytes) {
     if ((singleShort & 0xFF) == singleShort)
-        wallet_encode_byte((pb_byte_t) singleShort, new_bytes);
+        rlp_encode_byte((pb_byte_t) singleShort, new_bytes);
     else {
         new_bytes[0] = (pb_byte_t) (OFFSET_SHORT_ITEM + 2);
         new_bytes[1] = (singleShort >> 8 & 0xFF);
@@ -160,11 +152,11 @@ void wallet_encode_short(uint16_t singleShort, pb_byte_t *new_bytes) {
     }
 }
 
-void wallet_encode_int(uint32_t singleInt, pb_byte_t *new_bytes) {
+void rlp_encode_int(uint32_t singleInt, pb_byte_t *new_bytes) {
     if ((singleInt & 0xFF) == singleInt) {
-        wallet_encode_byte((pb_byte_t) singleInt, new_bytes);
+        rlp_encode_byte((pb_byte_t) singleInt, new_bytes);
     } else if ((singleInt & 0xFFFF) == singleInt) {
-        wallet_encode_short((uint16_t) singleInt, new_bytes);
+        rlp_encode_short((uint16_t) singleInt, new_bytes);
     } else if ((singleInt & 0xFFFFFF) == singleInt) {
         new_bytes[0] = (pb_byte_t) (OFFSET_SHORT_ITEM + 3);
         new_bytes[1] = (pb_byte_t) (singleInt >> 16);
@@ -178,5 +170,4 @@ void wallet_encode_int(uint32_t singleInt, pb_byte_t *new_bytes) {
         new_bytes[3] = (pb_byte_t) (singleInt >> 8);
         new_bytes[4] = (pb_byte_t) (singleInt);
     }
-
 }
