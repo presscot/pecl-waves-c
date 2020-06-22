@@ -119,7 +119,7 @@ void clearLeftOfElement(list_node_t *element, bool child){
         tmp = prev;
         prev = prev->prev;
         if(child){
-            efree(((*element)->element).pointer);
+            efree((element->element).pointer);
         }
         efree(tmp);
         tmp = NULL;
@@ -135,21 +135,20 @@ void clearRightOfElement(list_node_t *element, bool child){
         tmp = next;
         next = next->next;
         if(child){
-            efree(((*element)->element).pointer);
+            efree((element->element).pointer);
         }
         efree(tmp);
         tmp = NULL;
     }
 }
 
-void clearList(list_node_t **element, bool child){
-    clearLeftOfElement(*element);
-    clearRightOfElement(*element);
+void clearList(list_node_t *element, bool child){
+    clearLeftOfElement(element);
+    clearRightOfElement(element);
 
     if(child){
-        efree(((*element)->element).pointer);
+        efree((element->element).pointer);
     }
 
-    efree(*element);
-    element = NULL;
+    efree(element);
 }
