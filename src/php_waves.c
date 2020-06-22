@@ -815,7 +815,9 @@ PHP_FUNCTION(rlp_encode)
     uint_least8_t *encrypted = NULL;
     list_node_t* head = NULL;
 
-    //char rawTx[256];
+
+
+    char rawTx[256];
     uint64_t raw_tx_bytes[24];
 
 
