@@ -143,8 +143,8 @@ void clearRightOfElement(list_node_t *element, bool child){
 }
 
 void clearList(list_node_t *element, bool child){
-    clearLeftOfElement(element);
-    clearRightOfElement(element);
+    clearLeftOfElement(element, child);
+    clearRightOfElement(element, child);
 
     if(child){
         efree((element->element).pointer);
