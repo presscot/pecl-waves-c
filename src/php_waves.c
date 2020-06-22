@@ -858,13 +858,13 @@ php_printf("Number : %d\n", Z_LVAL_P(item) );
 
 //rawTx = safe_emalloc(sizeof(uint64_t), sum+5, 0);
 
-    length = wallet_encode_list(raw_tx_bytes, sum, head);
+    //length = wallet_encode_list(raw_tx_bytes, sum, head);
 
 
 
-    int8_to_char((uint8_t *) raw_tx_bytes, length, rawTx);
+    //int8_to_char((uint8_t *) raw_tx_bytes, length, rawTx);
 
-	RETURN_STRINGL((const char *)result, sizeof(result));
+	RETURN_STRINGL((const char *)rawTx, sizeof(rawTx));
 }
 
 /* {{{ proto array secp256k1_sign(string message, string private_key) */
