@@ -867,8 +867,6 @@ num_data = zend_hash_num_elements(Z_ARRVAL_P(tx_data));
 		//test = zval_get_long(item);
 		if (Z_TYPE_P(item) == IS_STRING) {
 
-
-
             str_len = size_of_bytes(Z_STRLEN_P(item));
             hex2byte_arr(Z_STRVAL_P(item), Z_STRLEN_P(item), str, str_len);
 //+5 // 1 + int 4 bytes
