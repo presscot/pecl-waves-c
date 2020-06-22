@@ -38,7 +38,7 @@ void removeElementFromList(list_node_t *element, void * pointer, pb_size_t size)
 list_node_t* getFirstElementOfList(list_node_t *element);
 void clearLeftOfElement(list_node_t *element, bool child);
 void clearRightOfElement(list_node_t *element, bool child);
-void clearList(list_node_t **element, bool child);
+void clearList(list_node_t *element, bool child);
 
 
 #endif //RLP_UTILS_H
