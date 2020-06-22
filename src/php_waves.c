@@ -856,6 +856,12 @@ PHP_FUNCTION(rlp_encode)
      char *s = "440ffd775ce91a833ab410777204d5341a6f9fa91216a6f3ee2c051fea6a0428";
     uint32_t v = 27;
 uint32_t num_data;
+uint32_t str_len = 0;
+uint32_t encrypted_len = 0, sum = 0;
+uint_least8_t str[1024];
+uint_least8_t* encrypted = NULL, result = NULL;
+
+list_node_t* head = NULL;
 
     zval *tx_data, *item;
 
@@ -870,6 +876,18 @@ num_data = zend_hash_num_elements(Z_ARRVAL_P(tx_data));
 	ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(tx_data), item) {
 		//test = zval_get_long(item);
 		if (Z_TYPE_P(item) == IS_STRING) {
+
+
+
+            str_len = size_of_bytes(Z_STRLEN_P(item));
+            hex2byte_arr(Z_STRVAL_P(item), Z_STRLEN_P(item), str, str_len);
+//+5 // 1 + int 4 bytes
+            encrypted = safe_emalloc(sizeof(uint_least8_t), str_len + 5, 0);
+//wyciek
+		    wallet_encode_element(str, str_len, encrypted, &encrypted_len, false);
+		    head = addElementToList(list_node_t *head, (void*)encrypted,  encrypted_len);
+sum += encrypted_len;
+
 php_printf("stringe: %s\n", Z_STRVAL_P(item) );
 		}else if (Z_TYPE_P(item) == IS_LONG){
 php_printf("Number : %d\n", Z_LVAL_P(item) );
@@ -877,9 +895,18 @@ php_printf("Number : %d\n", Z_LVAL_P(item) );
 		php_printf("else\n" );
 		}
 	} ZEND_HASH_FOREACH_END();
+
+	//zadeklarowac zmienną do wyniku wynik
+
+result = safe_emalloc(sizeof(uint_least8_t), sum, 0);
+
+    //wallet_encode_list
+
+
+
 php_printf("Number of elements in hashtable: %ld\n", num_data);
-    tx.nonce.size = size_of_bytes(strlen(nonce));
-    hex2byte_arr(nonce, strlen(nonce), tx.nonce.bytes, tx.nonce.size);
+    //tx.nonce.size = size_of_bytes(strlen(nonce));
+    //hex2byte_arr(nonce, strlen(nonce), tx.nonce.bytes, tx.nonce.size);
 
   //  tx.gas_price.size = size_of_bytes(strlen(gas_price));
   //  hex2byte_arr(gas_price, strlen(gas_price), tx.gas_price.bytes, tx.gas_price.size);
@@ -905,10 +932,10 @@ php_printf("Number of elements in hashtable: %ld\n", num_data);
     //signature.signature_s.size = size_of_bytes(strlen(s));
    // hex2byte_arr(s, strlen(s), signature.signature_s.bytes, signature.signature_s.size);
 
-    int length = wallet_ethereum_assemble_tx(&tx, &signature, raw_tx_bytes);
-    int8_to_char((uint8_t *) raw_tx_bytes, length, rawTx);
+    //int length = wallet_ethereum_assemble_tx(&tx, &signature, raw_tx_bytes);
+    //int8_to_char((uint8_t *) raw_tx_bytes, length, rawTx);
 
-	RETURN_STRINGL((const char *)rawTx, sizeof(rawTx));
+	RETURN_STRINGL((const char *)result, sizeof(result));
 }
 
 /* {{{ proto array secp256k1_sign(string message, string private_key) */

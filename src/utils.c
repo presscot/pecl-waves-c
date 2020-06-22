@@ -50,3 +50,86 @@ void int8_to_char(uint8_t *buffer, int len, char *out) {
     }
     out[i] = '\0';
 }
+
+list_node_t* createElement(void * pointer, pb_size_t size ){
+    list_node_t *head = NULL;
+
+    head = (list_node_t *)malloc(sizeof(list_node_t));
+    (head->element).pointer = pointer;
+    (head->element).size = size;
+    head->next = NULL;
+    head->prev = NULL;
+
+    return head;
+}
+
+list_node_t* addElementToList(list_node_t *head, void * pointer, pb_size_t size){
+    list_node_t *new_element = NULL;
+
+    new_element = createElement(pointer,size);
+
+    if(NULL == head){
+        return new_element;
+    }
+
+    while(NULL != head->next){
+        head = head->next;
+    }
+
+    head->next = new_element;
+    new_element->prev = head;
+
+    return new_element;
+}
+
+void removeElementFromList(list_node_t *element, void * pointer, pb_size_t size){
+     list_node_t *next = NULL, *prev = NULL;
+
+     next = element->next;
+     prev = element->prev;
+
+     if( NULL != next  ){
+        next->prev = prev;
+     }
+
+     if( NULL != prev  ){
+        next->next = next;
+     }
+
+     free(element);
+
+     return;
+}
+
+void clearLeftOfElement(list_node_t *element){
+    list_node_t *prev = NULL, *tmp = NULL;
+    prev = element->prev;
+    element->prev = NULL;
+
+    while(NULL != prev){
+        tmp = prev;
+        prev = prev->prev;
+        free(tmp);
+        tmp = NULL;
+    }
+}
+
+void clearRightOfElement(list_node_t *element){
+    list_node_t *next = NULL, *tmp = NULL;
+    next = element->next;
+    element->next = NULL;
+
+    while(NULL != next){
+        tmp = next;
+        next = next->next;
+        free(tmp);
+        tmp = NULL;
+    }
+}
+
+void clearList(list_node_t **element){
+    clearLeftOfElement(&element);
+    clearRightOfElement(&element);
+    free(&element);
+    element = NULL;
+}
