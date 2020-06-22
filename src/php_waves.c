@@ -866,7 +866,7 @@ raw_tx = safe_emalloc(sizeof(char), length*2, 0);
 
     int8_to_char((uint8_t *) raw_tx_bytes, length, raw_tx);
 
-	RETURN_STRINGL((const char *)raw_tx, sizeof(raw_tx));
+	RETURN_STRINGL((const char *)raw_tx, length*2);
 }
 
 /* {{{ proto array secp256k1_sign(string message, string private_key) */
