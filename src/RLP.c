@@ -22,7 +22,7 @@ int wallet_copy_rpl(uint8_t *source, uint8_t *destination, uint8_t size,
     return ret_val;
 }
 
-int wallet_encode_list(uint64_t *rawTx, uint32_t totalLength, list_node_t* list) {
+int wallet_encode_list(uint8_t *rawTx, uint32_t totalLength, list_node_t* list) {
     uint8_t *data;
 
     list = getFirstElementOfList(list);
