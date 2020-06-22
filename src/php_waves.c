@@ -855,7 +855,7 @@ PHP_FUNCTION(rlp_encode)
 
 //rawTx = safe_emalloc(sizeof(uint64_t), sum+5, 0);
 
-    /length = wallet_encode_list(raw_tx_bytes, sum, head);
+    length = wallet_encode_list(raw_tx_bytes, sum, head);
 
 
 
