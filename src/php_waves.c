@@ -859,7 +859,7 @@ uint32_t num_data;
 uint32_t str_len = 0;
 uint32_t encrypted_len = 0, sum = 0;
 uint_least8_t str[1024];
-uint_least8_t* encrypted = NULL, result = NULL;
+uint_least8_t *encrypted = NULL, *result = NULL;
 
 list_node_t* head = NULL;
 
