@@ -873,8 +873,8 @@ PHP_FUNCTION(secp256k1_sign)
     unsigned char output_hex[128];
     char private_key_bytes[32];
     char message_bytes[32];
-    char r[64];
-    char s[64];
+    unsigned char r[64];
+    unsigned char s[64];
 //	size_t target_length = oldlen >> 1;
 //	zend_string *str = zend_string_alloc(target_length, 0);
 //	unsigned char *ret = (unsigned char *)ZSTR_VAL(str);
@@ -898,8 +898,8 @@ PHP_FUNCTION(secp256k1_sign)
 
 
     php_hash_bin2hex(output_hex, output64, 64);
-    //memcpy(r, (const char *)output_hex, 64);
-    //memcpy(s+64, (const char *)output_hex, 64);
+    memcpy(r, (const char *)output_hex, 64);
+    memcpy(s + 64, (const char *)output_hex, 64);
 
     array_init(return_value);
 
