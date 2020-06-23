@@ -870,11 +870,11 @@ PHP_FUNCTION(secp256k1_sign)
     int recid;
     secp256k1_nonce_function noncefn = secp256k1_nonce_function_rfc6979;
     unsigned char output64[64];
-    char hash[128];
+    unsigned char output_hex[128];
     char private_key_bytes[32];
     char message_bytes[32];
-    char r[32];
-    char s[32];
+    char r[64];
+    char s[64];
 //	size_t target_length = oldlen >> 1;
 //	zend_string *str = zend_string_alloc(target_length, 0);
 //	unsigned char *ret = (unsigned char *)ZSTR_VAL(str);
@@ -897,8 +897,9 @@ PHP_FUNCTION(secp256k1_sign)
     secp256k1_context_destroy(NULL);
 
 
-    memcpy(&r, (const char *)output64, 32);
-    memcpy(&s+32, (const char *)output64, 32);
+    php_hash_bin2hex(output_hex, output64, 64);
+    memcpy(&r, (const char *)output_hex, 64);
+    memcpy(&s+64, (const char *)output_hex, 64);
 
     array_init(return_value);
 
