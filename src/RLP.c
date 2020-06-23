@@ -58,6 +58,7 @@ int rlp_encode_list(uint8_t *rawTx, uint32_t totalLength, list_node_t* list) {
     }
 
     memcpy(rawTx, data, copyPos);
+    efree(data);
     return copyPos;
 }
 
