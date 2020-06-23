@@ -852,7 +852,7 @@ PHP_FUNCTION(rlp_encode)
     int8_to_char((uint8_t *) raw_tx_bytes, length, raw_tx);
     EFREE(raw_tx_bytes)
 
-    clearList(head,false);
+    clearList(head,true);
 
 	RETURN_STRINGL((const char *)raw_tx, length*2);
 }
