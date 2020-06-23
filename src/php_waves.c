@@ -899,10 +899,12 @@ PHP_FUNCTION(secp256k1_sign)
 
     php_hash_bin2hex(output_hex, output64, 64);
     memcpy(r, (const char *)output_hex, 64);
-    //memcpy(s + 64, (const char *)output_hex, 64);
+    //memcpy(s + 63, (const char *)output_hex, 64);
 
     array_init(return_value);
 
+    add_assoc_stringl(return_value, "r", (const char *)r, 64);
+    add_assoc_stringl(return_value, "s", (const char *)s, 64);
     add_assoc_long(return_value, "v", recid);
     add_assoc_stringl(return_value, "signature", (const char *)output_hex, 128);
 }
