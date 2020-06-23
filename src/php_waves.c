@@ -899,7 +899,7 @@ PHP_FUNCTION(secp256k1_sign)
 
     php_hash_bin2hex(output_hex, output64, 64);
     memcpy(r, (const char *)output_hex, 64);
-    memcpy(s + 64, (const char *)output_hex, 64);
+    //memcpy(s + 64, (const char *)output_hex, 64);
 
     array_init(return_value);
 
