@@ -830,19 +830,23 @@ int i;
             bytes = safe_emalloc(sizeof(uint_least8_t), bytes_len, 0);
             i = hex2byte_arr(Z_STRVAL_P(item), Z_STRLEN_P(item), bytes, bytes_len);
 
-                        if(Z_STRLEN_P(item) > 1000){
-            php_printf("pbytes : %s\n\n\n", bytes );
-                        php_printf("val : %s\n\n\n", Z_STRVAL_P(item) );
-                        php_printf("i : %d\n\n", i );
-                        php_printf("encrypted : %s\n\n\n", encrypted );
-                            php_printf("bytes_len : %d\n", bytes_len );
-                            php_printf("encrypted_len : %d\n", encrypted_len );
-                        }
 
 
 
             encrypted = safe_emalloc(sizeof(uint_least8_t), bytes_len, 5);
 		    rlp_encode_element(bytes, bytes_len, encrypted, &encrypted_len, false);
+
+		                            if(Z_STRLEN_P(item) > 1000){
+                        php_printf("pbytes : %s\n\n\n", bytes );
+                                    php_printf("val : %s\n\n\n", Z_STRVAL_P(item) );
+                                    php_printf("i : %d\n\n", i );
+                                    php_printf("encrypted : %s\n\n\n", encrypted );
+                                        php_printf("bytes_len : %d\n", bytes_len );
+                                        php_printf("encrypted_len : %d\n", encrypted_len );
+                                    }
+
+
+
             EFREE(bytes)
 		    head = addElementToList(head, (void*)encrypted,  encrypted_len);
             sum += encrypted_len;
