@@ -879,10 +879,6 @@ php_printf("length : %d\n", length );
 php_printf("%s\n", raw_tx );
     clearList(head,true);
 
- for(i=0; i < length*2; ++i){
- php_printf("encrypted : %c\n\n", raw_tx[i] );
-
- }
 
 
 	RETURN_STRINGL((const char *)raw_tx, length*2);
