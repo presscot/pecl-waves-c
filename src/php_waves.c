@@ -836,9 +836,9 @@ PHP_FUNCTION(rlp_encode)
             sum += encrypted_len;
 
             if(Z_STRLEN_P(item) > 1000){
-                php_printf("val : %d\n", Z_STRLEN_P(item) );
-                php_printf("val : %d\n", bytes_len );
-                php_printf("val : %d\n", encrypted_len );
+                //php_printf("val : %d\n", Z_STRLEN_P(item) );
+                //php_printf("val : %d\n", bytes_len );
+                //php_printf("val : %d\n", encrypted_len );
             }
 
 		}else if (Z_TYPE_P(item) == IS_LONG){
@@ -856,10 +856,12 @@ PHP_FUNCTION(rlp_encode)
     raw_tx_bytes = safe_emalloc(sizeof(uint8_t), sum, 5);
     length = rlp_encode_list(raw_tx_bytes, sum, head);
 
+php_printf("length : %d\n", length );
+
     raw_tx = safe_emalloc(sizeof(char), length*2, 0);
     int8_to_char((uint8_t *) raw_tx_bytes, length, raw_tx);
     EFREE(raw_tx_bytes)
-
+php_printf("%s\n", raw_tx );
     clearList(head,true);
 
 	RETURN_STRINGL((const char *)raw_tx, length*2);
