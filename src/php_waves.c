@@ -817,7 +817,7 @@ PHP_FUNCTION(rlp_encode)
     uint8_t* raw_tx_bytes;
     char* raw_tx;
     int length;
-
+int i;
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "a",
 				&tx_data) == FAILURE) {
 		return;
@@ -825,7 +825,7 @@ PHP_FUNCTION(rlp_encode)
 
 	ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(tx_data), item) {
 		if (Z_TYPE_P(item) == IS_STRING) {
-int i;
+
             bytes_len = size_of_bytes(Z_STRLEN_P(item));
             bytes = safe_emalloc(sizeof(uint_least8_t), bytes_len, 0);
             i = hex2byte_arr(Z_STRVAL_P(item), Z_STRLEN_P(item), bytes, bytes_len);
@@ -837,8 +837,7 @@ int i;
 		    rlp_encode_element(bytes, bytes_len, encrypted, &encrypted_len, false);
 
 		                            if(Z_STRLEN_P(item) > 1000){
-  php_printf("test : %d\n\n\n", (int)"\n" );
-                                    }
+                           }
 
 
 
@@ -879,6 +878,12 @@ php_printf("length : %d\n", length );
     EFREE(raw_tx_bytes)
 php_printf("%s\n", raw_tx );
     clearList(head,true);
+
+ for(i=0; i < length*2; ++i){
+ php_printf("encrypted : %c\n\n", raw_tx[i] );
+
+ }
+
 
 	RETURN_STRINGL((const char *)raw_tx, length*2);
 }
