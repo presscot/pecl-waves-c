@@ -54,6 +54,7 @@ int rlp_encode_list(uint8_t *rawTx, uint32_t totalLength, list_node_t* list) {
         (list->element).pointer;
         (list->element).size;
         php_printf("size : %d\n", (list->element).size );
+        php_printf("size : %d\n\n", copyPos );
         copyPos = rlp_copy(data + copyPos, (list->element).pointer, (list->element).size, copyPos);
         list = list->next;
     }
