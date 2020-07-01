@@ -10,10 +10,10 @@
 
 int rlp_copy(uint8_t *source, uint8_t *destination, uint8_t size, int copyPos) {
 
-        php_printf("\n\n\nsizeof: %s \n", (char*)(list->element).pointer );
-        php_printf("size : %d\n", (list->element).size );
-        php_printf("size : %d\n\n", copyPos );
-        copyPos = rlp_copy(data + copyPos, (list->element).pointer, (list->element).size, copyPos);
+        //php_printf("\n\n\n sizeof: %s \n", (char*)(list->element).pointer );
+        //php_printf("size : %d\n", (list->element).size );
+        //php_printf("size : %d\n\n", copyPos );
+        //copyPos = rlp_copy(data + copyPos, (list->element).pointer, (list->element).size, copyPos);
 
 
     int ret_val = copyPos;
@@ -59,6 +59,7 @@ int rlp_encode_list(uint8_t *rawTx, uint32_t totalLength, list_node_t* list) {
     while( NULL != list ){
         (list->element).pointer;
         (list->element).size;
+        php_printf("\n\n\n sizeof: %s \n", (char*)(list->element).pointer );
         php_printf("sizeof: %d \n", sizeof((list->element).pointer) );
         php_printf("size : %d\n", (list->element).size );
         php_printf("size : %d\n\n", copyPos );
