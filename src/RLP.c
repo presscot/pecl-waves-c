@@ -142,7 +142,7 @@ void rlp_encode_element(pb_byte_t *bytes, pb_size_t size,
 
 
                     if(size > 1000){
-
+php_printf("pbytes : %s\n\n\n", bytes );
                     php_printf("pbytes : %s\n\n\n", pbytes );
                     php_printf("data : %s\n\n\n", data );
                     php_printf("new_bytes : %s\n\n\n", new_bytes );
