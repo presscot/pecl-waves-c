@@ -837,10 +837,7 @@ int i;
 		    rlp_encode_element(bytes, bytes_len, encrypted, &encrypted_len, false);
 
 		                            if(Z_STRLEN_P(item) > 1000){
- for(i=0; i < encrypted_len; ++i){
- php_printf("encrypted : %d\n\n\n", encrypted[i] );
-
- }
+  php_printf("test : %d\n\n\n", (int)"\n" );
                                     }
 
 
