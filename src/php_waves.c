@@ -817,7 +817,7 @@ PHP_FUNCTION(rlp_encode)
     uint8_t* raw_tx_bytes;
     char* raw_tx;
     int length;
-int i;
+
 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "a",
 				&tx_data) == FAILURE) {
 		return;
@@ -825,35 +825,14 @@ int i;
 
 	ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(tx_data), item) {
 		if (Z_TYPE_P(item) == IS_STRING) {
-
             bytes_len = size_of_bytes(Z_STRLEN_P(item));
             bytes = safe_emalloc(sizeof(uint_least8_t), bytes_len, 0);
-            i = hex2byte_arr(Z_STRVAL_P(item), Z_STRLEN_P(item), bytes, bytes_len);
-
-
-
-
+            hex2byte_arr(Z_STRVAL_P(item), Z_STRLEN_P(item), bytes, bytes_len);
             encrypted = safe_emalloc(sizeof(uint_least8_t), bytes_len, 5);
 		    rlp_encode_element(bytes, bytes_len, encrypted, &encrypted_len, false);
-
-		                            if(Z_STRLEN_P(item) > 1000){
-                           }
-
-
-
             EFREE(bytes)
 		    head = addElementToList(head, (void*)encrypted,  encrypted_len);
             sum += encrypted_len;
-
-            if(Z_STRLEN_P(item) > 1000){
-//php_printf("pbytes : %s\n\n\n", bytes );
-            //php_printf("val : %s\n\n\n", Z_STRVAL_P(item) );
-            //php_printf("val : %s\n\n\n", encrypted );
-                //php_printf("val : %d\n", Z_STRLEN_P(item) );
-                //php_printf("val : %d\n", bytes_len );
-                //php_printf("val : %d\n", encrypted_len );
-            }
-
 		}else if (Z_TYPE_P(item) == IS_LONG){
             encrypted = (uint_least8_t*)safe_emalloc(sizeof(uint32_t), 1, 0);
             rlp_encode_int(Z_LVAL_P(item), (uint32_t*)encrypted);
@@ -867,19 +846,13 @@ int i;
 	} ZEND_HASH_FOREACH_END();
     //+5 // 1 + int 4 bytes
     raw_tx_bytes = safe_emalloc(sizeof(uint8_t), sum, 5);
-php_printf("sum : %d\n", sum );
-
     length = rlp_encode_list(raw_tx_bytes, sum, head);
-
-php_printf("length : %d\n", length );
 
     raw_tx = safe_emalloc(sizeof(char), length*2, 0);
     int8_to_char((uint8_t *) raw_tx_bytes, length, raw_tx);
     EFREE(raw_tx_bytes)
-php_printf("%s\n", raw_tx );
+
     clearList(head,true);
-
-
 
 	RETURN_STRINGL((const char *)raw_tx, length*2);
 }

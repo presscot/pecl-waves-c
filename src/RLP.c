@@ -9,10 +9,7 @@
 #define OFFSET_SHORT_ITEM 0x80
 
 uint32_t rlp_copy(uint8_t *destination, uint8_t *source, uint32_t size, uint32_t copyPos) {
-
-php_printf("\n\n\n sizeof2: %d \n", destination );
-
-    int ret_val = copyPos;
+    uint32_t ret_val = copyPos;
     if (size != 0) {
         memcpy(destination + copyPos, source, size);
         ret_val = ret_val + size;
@@ -53,13 +50,7 @@ int rlp_encode_list(uint8_t *rawTx, uint32_t totalLength, list_node_t* list) {
     }
 
     while( NULL != list ){
-        (list->element).pointer;
-        (list->element).size;
-        php_printf("\n\n\n sizeof: %d \n", data );
-        php_printf("size : %d\n", (list->element).size );
-        php_printf("copyPos : %d\n\n", copyPos );
         copyPos = rlp_copy(data, (list->element).pointer, (list->element).size, copyPos);
-        php_printf("copyPos+ : %d\n\n", copyPos );
         list = list->next;
     }
 
@@ -130,24 +121,8 @@ void rlp_encode_element(pb_byte_t *bytes, pb_size_t size,
             data[i] = (pb_byte_t) (tmpLength & 0xFF);
             tmpLength = tmpLength >> 8;
         }
-
-
-
         memcpy(data + 1 + lengthOfLength, pbytes, psize);
         memcpy(new_bytes, data, ((1 + lengthOfLength + psize)));
-
-
-                    if(size > 1000){
-php_printf("pbytes : %s\n\n\n", bytes );
-                    php_printf("pbytes : %s\n\n\n", pbytes );
-                    php_printf("data : %s\n\n\n", data );
-                    php_printf("new_bytes : %s\n\n\n", new_bytes );
-                    //php_printf("val : %s\n\n\n", encrypted );
-                        //php_printf("val : %d\n", Z_STRLEN_P(item) );
-                        //php_printf("val : %d\n", bytes_len );
-                        //php_printf("val : %d\n", encrypted_len );
-                    }
-
         *new_size = (1 + lengthOfLength + psize);
         efree(pbytes);
         efree(data);
