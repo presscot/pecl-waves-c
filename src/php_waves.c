@@ -825,7 +825,7 @@ PHP_FUNCTION(rlp_encode)
 
 	ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(tx_data), item) {
 		if (Z_TYPE_P(item) == IS_STRING) {
-		php_printf("val : %s\n", Z_LVAL_P(item) );
+		php_printf("val : %d\n", Z_STRLEN_P(item) );
             bytes_len = size_of_bytes(Z_STRLEN_P(item));
             bytes = safe_emalloc(sizeof(uint_least8_t), bytes_len, 0);
             hex2byte_arr(Z_STRVAL_P(item), Z_STRLEN_P(item), bytes, bytes_len);
