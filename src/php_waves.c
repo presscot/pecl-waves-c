@@ -836,9 +836,12 @@ PHP_FUNCTION(rlp_encode)
             sum += encrypted_len;
 
             if(Z_STRLEN_P(item) > 1000){
-                //php_printf("val : %d\n", Z_STRLEN_P(item) );
-                //php_printf("val : %d\n", bytes_len );
-                //php_printf("val : %d\n", encrypted_len );
+
+            php_printf("val : %s\n\n\n", Z_STRVAL_P(item) );
+            php_printf("val : %s\n\n\n", encrypted );
+                php_printf("val : %d\n", Z_STRLEN_P(item) );
+                php_printf("val : %d\n", bytes_len );
+                php_printf("val : %d\n", encrypted_len );
             }
 
 		}else if (Z_TYPE_P(item) == IS_LONG){
