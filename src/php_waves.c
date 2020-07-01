@@ -829,7 +829,7 @@ PHP_FUNCTION(rlp_encode)
             bytes_len = size_of_bytes(Z_STRLEN_P(item));
             bytes = safe_emalloc(sizeof(uint_least8_t), bytes_len, 0);
             hex2byte_arr(Z_STRVAL_P(item), Z_STRLEN_P(item), bytes, bytes_len);
-            encrypted = safe_emalloc(sizeof(uint_least8_t), bytes_len, 205);
+            encrypted = safe_emalloc(sizeof(uint_least8_t), bytes_len, 5);
 		    rlp_encode_element(bytes, bytes_len, encrypted, &encrypted_len, false);
             EFREE(bytes)
 		    head = addElementToList(head, (void*)encrypted,  encrypted_len);
@@ -837,11 +837,11 @@ PHP_FUNCTION(rlp_encode)
 
             if(Z_STRLEN_P(item) > 1000){
 
-            php_printf("val : %s\n\n\n", Z_STRVAL_P(item) );
-            php_printf("val : %s\n\n\n", encrypted );
-                php_printf("val : %d\n", Z_STRLEN_P(item) );
-                php_printf("val : %d\n", bytes_len );
-                php_printf("val : %d\n", encrypted_len );
+            //php_printf("val : %s\n\n\n", Z_STRVAL_P(item) );
+            //php_printf("val : %s\n\n\n", encrypted );
+                //php_printf("val : %d\n", Z_STRLEN_P(item) );
+                //php_printf("val : %d\n", bytes_len );
+                //php_printf("val : %d\n", encrypted_len );
             }
 
 		}else if (Z_TYPE_P(item) == IS_LONG){
