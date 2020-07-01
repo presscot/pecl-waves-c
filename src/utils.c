@@ -29,6 +29,7 @@ int hex2byte_arr(char *buf, int len, uint8_t *out, int outbuf_size) {
         return -1; /* Output buffer is smaller than need */
 
     while(i >= 0) {
+    php_printf("i : %d\n\n", i );
         out[j] = strtohex(buf[i--]);
         if (i >= 0) {
             out[j--] |= strtohex(buf[i--]) << 4;
