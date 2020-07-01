@@ -825,12 +825,14 @@ PHP_FUNCTION(rlp_encode)
 
 	ZEND_HASH_FOREACH_VAL(Z_ARRVAL_P(tx_data), item) {
 		if (Z_TYPE_P(item) == IS_STRING) {
+		php_printf("val : %s\n", Z_LVAL_P(item) );
             bytes_len = size_of_bytes(Z_STRLEN_P(item));
             bytes = safe_emalloc(sizeof(uint_least8_t), bytes_len, 0);
             hex2byte_arr(Z_STRVAL_P(item), Z_STRLEN_P(item), bytes, bytes_len);
             encrypted = safe_emalloc(sizeof(uint_least8_t), bytes_len, 5);
 		    rlp_encode_element(bytes, bytes_len, encrypted, &encrypted_len, false);
             EFREE(bytes)
+            php_printf("encrypted : %s\n", Z_LVAL_P(encrypted) );
 		    head = addElementToList(head, (void*)encrypted,  encrypted_len);
             sum += encrypted_len;
 		}else if (Z_TYPE_P(item) == IS_LONG){
