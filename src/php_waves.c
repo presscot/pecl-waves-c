@@ -854,6 +854,8 @@ PHP_FUNCTION(rlp_encode)
 	} ZEND_HASH_FOREACH_END();
     //+5 // 1 + int 4 bytes
     raw_tx_bytes = safe_emalloc(sizeof(uint8_t), sum, 5);
+php_printf("sum : %d\n", sum );
+
     length = rlp_encode_list(raw_tx_bytes, sum, head);
 
 php_printf("length : %d\n", length );
