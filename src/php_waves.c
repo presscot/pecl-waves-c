@@ -832,7 +832,7 @@ int i;
 
                         if(Z_STRLEN_P(item) > 1000){
             php_printf("pbytes : %s\n\n\n", bytes );
-                        /php_printf("val : %s\n\n\n", Z_STRVAL_P(item) );
+                        php_printf("val : %s\n\n\n", Z_STRVAL_P(item) );
                         php_printf("i : %d\n\n", i );
                         php_printf("encrypted : %s\n\n\n", encrypted );
                             php_printf("bytes_len : %d\n", bytes_len );
